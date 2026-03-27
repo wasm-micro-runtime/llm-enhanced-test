@@ -1,0 +1,51 @@
+#!/bin/bash
+# Usage: ./get_coverage.sh <test_file.cc>
+# Example: ./get_coverage.sh llm-enchanced-test/constants/enhanced_f32_const_test.cc
+
+set -e
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <test_file.cc>"
+    echo "Example: $0 llm-enchanced-test/constants/enhanced_f32_const_test.cc"
+    exit 1
+fi
+
+TEST_FILE="$1"
+
+# Extract the module name from the path: llm-enchanced-test/constants/xxx.cc → constants
+MODULE_NAME=$(echo "$TEST_FILE" | sed -n 's|.*llm-enchanced-test/\([^/]*\)/.*|\1|p')
+
+if [ -z "$MODULE_NAME" ]; then
+    echo "Error: Unable to extract the module name from the path: $TEST_FILE"
+    exit 1
+fi
+
+# Extract the class name from the test file content (the first parameter of TEST_P or TEST_F)
+# Note: TEST_P/TEST_F may have leading spaces, so we don't require ^
+CLASS_NAME=$(grep -E "^\s*(TEST_P|TEST_F)\s*\(" "$TEST_FILE" | head -1 | sed -E 's/^\s*(TEST_P|TEST_F)\s*\(\s*([^,]+)\s*,.*/\2/')
+
+if [ -z "$CLASS_NAME" ]; then
+    echo "Error: Unable to extract the class name from the test file: $TEST_FILE"
+    exit 1
+fi
+
+BUILD_DIR="build/llm-enhanced-test/$MODULE_NAME"
+
+echo "[1/5] Building module: $MODULE_NAME"
+cmake --build "$BUILD_DIR" >/dev/null 2>&1 || {
+    echo "Error: Build failed for $MODULE_NAME"
+    exit 1
+}
+
+echo "[2/5] Cleaning up coverage data..."
+find "$BUILD_DIR" -name "*.gcda" -delete 2>/dev/null || true
+
+echo "[3/5] Running tests: $CLASS_NAME"
+ctest --test-dir "$BUILD_DIR" -R "$CLASS_NAME" --output-on-failure >/dev/null 2>&1 || true
+
+echo "[4/5] Collecting coverage..."
+lcov --capture --directory "$BUILD_DIR" --output-file coverage.all.info >/dev/null 2>&1
+lcov --extract coverage.all.info "*/core/iwasm/*" "*/core/shared/*" --output-file coverage.info >/dev/null 2>&1
+
+echo "[5/5] Coverage summary:"
+lcov --summary coverage.info 2>&1 | grep -E "lines|functions" | head -2
