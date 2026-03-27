@@ -135,32 +135,6 @@ protected:
 };
 
 /**
- * @brief Test class for basic memory growth scenarios with reasonable limits
- */
-class MemoryGrowBasicTest : public MemoryGrowTestBase {
-protected:
-    /**
-     * @brief Load WASM module with basic memory configuration (initial 2 pages, max 10 pages)
-     */
-    void loadWasmModule() override {
-        std::string wasm_file = cwd + "/wasm-apps/memory_grow_test.wasm";
-        buf = (uint8_t *)bh_read_file_to_buffer(wasm_file.c_str(), &buf_size);
-        ASSERT_NE(buf, nullptr) << "Failed to read WASM file: " << wasm_file;
-
-        module = wasm_runtime_load(buf, buf_size, error_buf, sizeof(error_buf));
-        ASSERT_NE(module, nullptr) << "Failed to load WASM module: " << error_buf;
-
-        module_inst = wasm_runtime_instantiate(module, stack_size, heap_size, error_buf, sizeof(error_buf));
-        ASSERT_NE(module_inst, nullptr) << "Failed to instantiate WASM module: " << error_buf;
-
-        wasm_runtime_set_running_mode(module_inst, GetParam());
-
-        exec_env = wasm_runtime_create_exec_env(module_inst, stack_size);
-        ASSERT_NE(exec_env, nullptr) << "Failed to create execution environment";
-    }
-};
-
-/**
  * @brief Test class for boundary testing with limited maximum memory (initial 1 page, max 3 pages)
  */
 class MemoryGrowLimitedTest : public MemoryGrowTestBase {
