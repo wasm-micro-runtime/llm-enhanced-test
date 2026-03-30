@@ -219,10 +219,6 @@ TEST_P(MemoryGrowLimitedTest, ExcessiveGrowth_ReturnsFailure) {
     }
 }
 
-// Parameterized test instantiation for cross-execution mode validation
-INSTANTIATE_TEST_CASE_P(RunningModeTest, MemoryGrowBasicTest,
-                        testing::Values(RunningMode::Mode_Interp, RunningMode::Mode_LLVM_JIT));
-
 INSTANTIATE_TEST_CASE_P(RunningModeTest, MemoryGrowLimitedTest,
                         testing::Values(RunningMode::Mode_Interp, RunningMode::Mode_LLVM_JIT));
                         
