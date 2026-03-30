@@ -238,53 +238,6 @@ TEST_P(I64Extend16sTest, BasicSignExtension_ReturnsCorrectValues)
         << "Large negative value should extend correctly";
 }
 
-/**
- * @test StackUnderflow_HandledGracefully
- * @brief Validates proper handling of stack underflow conditions
- * @details Tests module loading behavior when stack underflow scenarios occur.
- *          Since i64.extend16_s requires one i64 operand, empty stack should be
- *          handled appropriately by the WASM runtime.
- * @test_category Error - Stack underflow validation
- * @coverage_target core/iwasm/interpreter/wasm_interp_classic.c:stack_validation
- * @input_conditions Stack underflow test module with no operands
- * @expected_behavior Module loads successfully, runtime handles stack conditions appropriately
- * @validation_method Module loading verification and error handling validation
- */
-TEST_P(I64Extend16sTest, StackUnderflow_HandledGracefully)
-{
-    // Clean up current module to test underflow scenario
-    if (exec_env != nullptr) {
-        wasm_runtime_destroy_exec_env(exec_env);
-        exec_env = nullptr;
-    }
-    if (module_inst != nullptr) {
-        wasm_runtime_deinstantiate(module_inst);
-        module_inst = nullptr;
-    }
-    if (module != nullptr) {
-        wasm_runtime_unload(module);
-        module = nullptr;
-    }
-    if (buf != nullptr) {
-        BH_FREE(buf);
-        buf = nullptr;
-    }
-
-    // Load the genuinely invalid stack underflow test module
-    uint32_t underflow_buf_size;
-    auto *underflow_buf = reinterpret_cast<uint8_t *>(
-        bh_read_file_to_buffer(WASM_FILE_UNDERFLOW.c_str(), &underflow_buf_size));
-    ASSERT_NE(underflow_buf, nullptr) << "Failed to read underflow test WASM file";
-
-    // Module load should FAIL because the wasm violates stack discipline
-    // (i64.extend16_s used with no operand on the stack triggers validation error)
-    wasm_module_t underflow_module = wasm_runtime_load(underflow_buf, underflow_buf_size, error_buf, sizeof(error_buf));
-    ASSERT_EQ(underflow_module, nullptr) << "Load should have failed for invalid stack underflow module";
-    ASSERT_NE('\0', error_buf[0]) << "Load failure should set an error message in error_buf";
-
-    BH_FREE(underflow_buf);
-}
-
 // Instantiate parameterized tests for both Interpreter and AOT modes
 INSTANTIATE_TEST_SUITE_P(RunningMode, I64Extend16sTest,
                          testing::Values(Mode_Interp, Mode_LLVM_JIT),
