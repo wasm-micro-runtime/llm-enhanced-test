@@ -16,7 +16,7 @@
 
 ## Test Case [1/2]: I64Extend16sTest.BasicSignExtension_ReturnsCorrectValues
 
-**File**: `smart-tests/numeric/enhanced_i64_extend16_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_extend16_s_test.cc`
 **Start line**: 220
 **Parameterized**: Yes
 
@@ -63,7 +63,7 @@ None.
 
 ## Test Case [2/2]: I64Extend16sTest.StackUnderflow_HandledGracefully
 
-**File**: `smart-tests/numeric/enhanced_i64_extend16_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_extend16_s_test.cc`
 **Start line**: 253
 **Parameterized**: Yes
 

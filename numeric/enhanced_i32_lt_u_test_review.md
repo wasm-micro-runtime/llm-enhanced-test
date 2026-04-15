@@ -18,7 +18,7 @@
 
 ## Test Case [1/1]: I32LtUTest.TransitivityProperty_ValidateLogicalConsistency
 
-**File**: `smart-tests/numeric/enhanced_i32_lt_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_lt_u_test.cc`
 **Start line**: 141
 **Parameterized**: Yes
 

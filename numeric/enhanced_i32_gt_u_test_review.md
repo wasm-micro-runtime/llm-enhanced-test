@@ -18,7 +18,7 @@
 
 ## Test Case [1/2]: I32GtUTest.TransitivityProperty_ValidateLogicalConsistency
 
-**File**: `smart-tests/numeric/enhanced_i32_gt_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_gt_u_test.cc`
 **Start line**: 141
 **Parameterized**: Yes
 
@@ -62,7 +62,7 @@ None.
 
 ## Test Case [2/2]: I32GtUTest.ZeroComparisons_ValidateZeroBehavior
 
-**File**: `smart-tests/numeric/enhanced_i32_gt_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_gt_u_test.cc`
 **Start line**: 169
 **Parameterized**: Yes
 

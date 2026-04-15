@@ -21,7 +21,7 @@
 
 ## Test Case [1/1]: I64Extend32sTest.BasicSignExtension_NegativeValues_ExtendsCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i64_extend32_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_extend32_s_test.cc`
 **Start line**: 196
 **Parameterized**: Yes
 

@@ -17,7 +17,7 @@
 
 ## Test Case [1/2]: I32ReinterpretF32Test.BasicReinterpretation_TypicalFloats_ReturnsCorrectBitPattern
 
-**File**: `smart-tests/numeric/enhanced_i32_reinterpret_f32_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_reinterpret_f32_test.cc`
 **Start line**: 175
 **Parameterized**: Yes
 
@@ -62,7 +62,7 @@ None.
 
 ## Test Case [2/2]: I32ReinterpretF32Test.SpecialValues_ZeroAndNaN_ReturnsCorrectBitPattern
 
-**File**: `smart-tests/numeric/enhanced_i32_reinterpret_f32_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_reinterpret_f32_test.cc`
 **Start line**: 205
 **Parameterized**: Yes
 

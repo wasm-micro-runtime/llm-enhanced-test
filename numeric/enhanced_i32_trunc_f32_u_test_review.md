@@ -20,7 +20,7 @@
 
 ## Test Case [1/2]: I32TruncF32UTest.BoundaryValues_UnsignedLimits_HandlesCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i32_trunc_f32_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_trunc_f32_u_test.cc`
 **Start line**: 173
 **Parameterized**: Yes
 
@@ -65,7 +65,7 @@ None.
 
 ## Test Case [2/2]: I32TruncF32UTest.NegativeValues_AnyNegativeInput_TriggersTraps
 
-**File**: `smart-tests/numeric/enhanced_i32_trunc_f32_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_trunc_f32_u_test.cc`
 **Start line**: 206
 **Parameterized**: Yes
 

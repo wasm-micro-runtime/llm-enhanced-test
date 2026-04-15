@@ -17,7 +17,7 @@
 
 ## Test Case [1/1]: I32TruncSatF32UTest.SpecialFloatValues_HandledCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i32_trunc_sat_f32_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_trunc_sat_f32_u_test.cc`
 **Start line**: 138
 **Parameterized**: Yes
 

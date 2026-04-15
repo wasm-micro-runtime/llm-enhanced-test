@@ -18,7 +18,7 @@
 
 ## Test Case [1/3]: I32RotlTest.BasicRotation_ProducesCorrectResults
 
-**File**: `smart-tests/numeric/enhanced_i32_rotl_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rotl_test.cc`
 **Start line**: 174
 **Parameterized**: Yes
 
@@ -62,7 +62,7 @@ None.
 
 ## Test Case [2/3]: I32RotlTest.MathematicalProperties_Validated
 
-**File**: `smart-tests/numeric/enhanced_i32_rotl_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rotl_test.cc`
 **Start line**: 201
 **Parameterized**: Yes
 
@@ -104,7 +104,7 @@ None.
 
 ## Test Case [3/3]: I32RotlTest.StackUnderflow_HandledCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i32_rotl_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rotl_test.cc`
 **Start line**: 235
 **Parameterized**: Yes
 

@@ -18,7 +18,7 @@
 
 ## Test Case [1/1]: I32RotrTestSuite.BasicRotation_ReturnsCorrectResult
 
-**File**: `smart-tests/numeric/enhanced_i32_rotr_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rotr_test.cc`
 **Start line**: 133
 **Parameterized**: Yes
 

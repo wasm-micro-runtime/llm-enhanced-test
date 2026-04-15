@@ -17,7 +17,7 @@
 
 ## Test Case [1/1]: I32MulTest.BasicMultiplication_ReturnsCorrectResults
 
-**File**: `smart-tests/numeric/enhanced_i32_mul_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_mul_test.cc`
 **Start line**: 238
 **Parameterized**: Yes
 

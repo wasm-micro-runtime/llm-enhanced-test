@@ -17,7 +17,7 @@
 
 ## Test Case [1/3]: I64Extend8sTest.BasicSignExtension_ReturnsCorrectValues
 
-**File**: `smart-tests/numeric/enhanced_i64_extend8_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_extend8_s_test.cc`
 **Start line**: 228
 **Parameterized**: Yes
 
@@ -60,7 +60,7 @@ None.
 
 ## Test Case [2/3]: I64Extend8sTest.BoundarySignExtension_HandlesEdgeCases
 
-**File**: `smart-tests/numeric/enhanced_i64_extend8_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_extend8_s_test.cc`
 **Start line**: 254
 **Parameterized**: Yes
 
@@ -103,7 +103,7 @@ None.
 
 ## Test Case [3/3]: I64Extend8sTest.StackUnderflow_HandledCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i64_extend8_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_extend8_s_test.cc`
 **Start line**: 280
 **Parameterized**: Yes
 

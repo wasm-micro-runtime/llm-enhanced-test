@@ -18,7 +18,7 @@
 
 ## Test Case [1/1]: I32ShrSTestSuite.SignExtension_PreservesSignBit
 
-**File**: `smart-tests/numeric/enhanced_i32_shr_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_shr_s_test.cc`
 **Start line**: 133
 **Parameterized**: Yes
 

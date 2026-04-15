@@ -19,7 +19,7 @@
 
 ## Test Case [1/1]: I32TruncF64STest.BasicTruncation_ReturnsCorrectInteger
 
-**File**: `smart-tests/numeric/enhanced_i32_trunc_f64_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_trunc_f64_s_test.cc`
 **Start line**: 168
 **Parameterized**: Yes
 

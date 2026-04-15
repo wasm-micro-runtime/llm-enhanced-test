@@ -17,7 +17,7 @@
 
 ## Test Case [1/1]: I32NeTest.ZeroComparison_ValidatesIdentityAndDifference
 
-**File**: `smart-tests/numeric/enhanced_i32_ne_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_ne_test.cc`
 **Start line**: 188
 **Parameterized**: Yes
 

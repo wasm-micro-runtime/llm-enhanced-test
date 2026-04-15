@@ -17,7 +17,7 @@
 
 ## Test Case [1/2]: I32XorTest.IdentityProperties_ValidatesMathematicalRules
 
-**File**: `smart-tests/numeric/enhanced_i32_xor_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_xor_test.cc`
 **Start line**: 183
 **Parameterized**: Yes
 
@@ -65,7 +65,7 @@ None.
 
 ## Test Case [2/2]: I32XorTest.StackUnderflow_HandlesErrorCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i32_xor_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_xor_test.cc`
 **Start line**: 213
 **Parameterized**: Yes
 

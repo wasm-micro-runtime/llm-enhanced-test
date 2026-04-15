@@ -15,7 +15,7 @@
 
 ## Test Case [1/4]: I32RemUTest.BasicRemainderOperation_ReturnsCorrectResult
 
-**File**: `smart-tests/numeric/enhanced_i32_rem_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rem_u_test.cc`
 **Start line**: 149
 **Parameterized**: Yes
 
@@ -60,7 +60,7 @@ None.
 
 ## Test Case [2/4]: I32RemUTest.BoundaryValues_HandleMaximumValues
 
-**File**: `smart-tests/numeric/enhanced_i32_rem_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rem_u_test.cc`
 **Start line**: 170
 **Parameterized**: Yes
 
@@ -101,7 +101,7 @@ None.
 
 ## Test Case [3/4]: I32RemUTest.IdentityOperations_ProduceExpectedResults
 
-**File**: `smart-tests/numeric/enhanced_i32_rem_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rem_u_test.cc`
 **Start line**: 191
 **Parameterized**: Yes
 
@@ -142,7 +142,7 @@ None.
 
 ## Test Case [4/4]: I32RemUTest.DivisionByZero_CausesTrap
 
-**File**: `smart-tests/numeric/enhanced_i32_rem_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_rem_u_test.cc`
 **Start line**: 212
 **Parameterized**: Yes
 

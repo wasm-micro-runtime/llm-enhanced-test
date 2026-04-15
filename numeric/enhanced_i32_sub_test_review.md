@@ -17,7 +17,7 @@
 
 ## Test Case [1/2]: I32SubTest.BasicSubtraction_ReturnsCorrectResults
 
-**File**: `smart-tests/numeric/enhanced_i32_sub_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_sub_test.cc`
 **Start line**: 164
 **Parameterized**: Yes
 
@@ -62,7 +62,7 @@ None.
 
 ## Test Case [2/2]: I32SubTest.MathematicalProperties_ValidatesCorrectness
 
-**File**: `smart-tests/numeric/enhanced_i32_sub_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_sub_test.cc`
 **Start line**: 198
 **Parameterized**: Yes
 

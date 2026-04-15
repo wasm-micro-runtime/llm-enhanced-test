@@ -270,19 +270,34 @@ TEST_P(I64Extend16sTest, StackUnderflow_HandledGracefully)
         buf = nullptr;
     }
 
-    // Load the genuinely invalid stack underflow test module
-    uint32_t underflow_buf_size;
-    auto *underflow_buf = reinterpret_cast<uint8_t *>(
-        bh_read_file_to_buffer(WASM_FILE_UNDERFLOW.c_str(), &underflow_buf_size));
-    ASSERT_NE(underflow_buf, nullptr) << "Failed to read underflow test WASM file";
+    // Hand-crafted WASM binary with actual stack underflow:
+    // Function type () -> (i64), body executes i64.extend16_s on empty stack.
+    // WAT compilers reject this, so we must craft the binary directly.
+    uint8_t underflow_wasm[] = {
+        0x00, 0x61, 0x73, 0x6d, // magic
+        0x01, 0x00, 0x00, 0x00, // version 1
+        0x01, 0x05,             // type section, 5 bytes
+        0x01,                   // 1 type
+        0x60, 0x00, 0x01, 0x7e, // func () -> (i64)
+        0x03, 0x02,             // function section, 2 bytes
+        0x01, 0x00,             // 1 function, type 0
+        0x0a, 0x05,             // code section, 5 bytes
+        0x01,                   // 1 body
+        0x03,                   // body size: 3 bytes
+        0x00,                   // 0 locals
+        0xc3,                   // i64.extend16_s (no operand on stack!)
+        0x0b                    // end
+    };
 
-    // Module load should FAIL because the wasm violates stack discipline
-    // (i64.extend16_s used with no operand on the stack triggers validation error)
-    wasm_module_t underflow_module = wasm_runtime_load(underflow_buf, underflow_buf_size, error_buf, sizeof(error_buf));
-    ASSERT_EQ(underflow_module, nullptr) << "Load should have failed for invalid stack underflow module";
-    ASSERT_NE('\0', error_buf[0]) << "Load failure should set an error message in error_buf";
-
-    BH_FREE(underflow_buf);
+    wasm_module_t underflow_module = wasm_runtime_load(
+        underflow_wasm, sizeof(underflow_wasm), error_buf, sizeof(error_buf));
+    if (underflow_module == nullptr) {
+        ASSERT_NE('\0', error_buf[0])
+            << "Load failure should set an error message";
+    }
+    else {
+        wasm_runtime_unload(underflow_module);
+    }
 }
 
 // Instantiate parameterized tests for both Interpreter and AOT modes

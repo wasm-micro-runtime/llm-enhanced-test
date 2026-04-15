@@ -22,7 +22,7 @@
 
 ## Test Case [1/2]: I32ShlTest.BoundaryShift_IntegerBoundaries_OverflowsCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i32_shl_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_shl_test.cc`
 **Start line**: 182
 **Parameterized**: Yes
 
@@ -64,7 +64,7 @@ None.
 
 ## Test Case [2/2]: I32ShlTest.EdgeShift_ZeroOperands_ReturnsZero
 
-**File**: `smart-tests/numeric/enhanced_i32_shl_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_shl_test.cc`
 **Start line**: 201
 **Parameterized**: Yes
 

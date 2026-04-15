@@ -17,7 +17,7 @@
 
 ## Test Case [1/1]: I32TruncSatF64UTest.BasicConversion_ReturnsCorrectResults
 
-**File**: `smart-tests/numeric/enhanced_i32_trunc_sat_f64_u_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_trunc_sat_f64_u_test.cc`
 **Start line**: 147
 **Parameterized**: Yes
 

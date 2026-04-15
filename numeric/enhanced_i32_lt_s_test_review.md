@@ -16,7 +16,7 @@
 
 ## Test Case [1/2]: I32LtSTest.BoundaryValues_HandlesExtremeCorrectly
 
-**File**: `smart-tests/numeric/enhanced_i32_lt_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_lt_s_test.cc`
 **Start line**: 141
 **Parameterized**: Yes
 
@@ -61,7 +61,7 @@ None.
 
 ## Test Case [2/2]: I32LtSTest.MathematicalProperties_ValidatesCorrectness
 
-**File**: `smart-tests/numeric/enhanced_i32_lt_s_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i32_lt_s_test.cc`
 **Start line**: 180
 **Parameterized**: Yes
 

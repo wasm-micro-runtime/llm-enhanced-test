@@ -17,7 +17,7 @@
 
 ## Test Case [1/1]: I64CtzTest.BoundaryValues_ReturnsExpectedCounts
 
-**File**: `smart-tests/numeric/enhanced_i64_ctz_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_ctz_test.cc`
 **Start line**: 134
 **Parameterized**: Yes
 

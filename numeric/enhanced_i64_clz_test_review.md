@@ -17,7 +17,7 @@
 
 ## Test Case [1/3]: I64ClzTest.BoundaryValues_HandleExtremes
 
-**File**: `smart-tests/numeric/enhanced_i64_clz_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_clz_test.cc`
 **Start line**: 133
 **Parameterized**: Yes
 
@@ -61,7 +61,7 @@ None.
 
 ## Test Case [2/3]: I64ClzTest.MathematicalProperties_MaintainConsistency
 
-**File**: `smart-tests/numeric/enhanced_i64_clz_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_clz_test.cc`
 **Start line**: 164
 **Parameterized**: Yes
 
@@ -106,7 +106,7 @@ None.
 
 ## Test Case [3/3]: I64ClzTest.ModuleValidation_HandlesInvalidBytecode
 
-**File**: `smart-tests/numeric/enhanced_i64_clz_test.cc`
+**File**: `llm-enhanced-testnumeric/enhanced_i64_clz_test.cc`
 **Start line**: 203
 **Parameterized**: Yes
 
