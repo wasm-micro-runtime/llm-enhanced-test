@@ -15,7 +15,7 @@
 
 ## Test Case [1/6]: FastInterpCoverage.NumericOpcodes
 
-**File**: `smart-tests/fast-interp/fast_interp_coverage_test.cc`
+**File**: `llm-enhanced-test/fast-interp/fast_interp_coverage_test.cc`
 **Start line**: 191
 **Parameterized**: No
 
@@ -69,7 +69,7 @@ The test name "NumericOpcodes" implies testing specific numeric opcode behavior 
 
 ## Test Case [2/6]: FastInterpCoverage.MemoryOpcodes
 
-**File**: `smart-tests/fast-interp/fast_interp_coverage_test.cc`
+**File**: `llm-enhanced-test/fast-interp/fast_interp_coverage_test.cc`
 **Start line**: 200
 **Parameterized**: No
 
@@ -118,7 +118,7 @@ The test name "MemoryOpcodes" implies testing memory operation correctness but t
 
 ## Test Case [3/6]: FastInterpCoverage.ControlFlowOpcodes
 
-**File**: `smart-tests/fast-interp/fast_interp_coverage_test.cc`
+**File**: `llm-enhanced-test/fast-interp/fast_interp_coverage_test.cc`
 **Start line**: 209
 **Parameterized**: No
 
@@ -168,7 +168,7 @@ The test name "ControlFlowOpcodes" implies broad control flow testing (blocks, l
 
 ## Test Case [4/6]: FastInterpCoverage.VariableOpcodes
 
-**File**: `smart-tests/fast-interp/fast_interp_coverage_test.cc`
+**File**: `llm-enhanced-test/fast-interp/fast_interp_coverage_test.cc`
 **Start line**: 219
 **Parameterized**: No
 
@@ -217,7 +217,7 @@ The test name "VariableOpcodes" implies testing variable opcode correctness but 
 
 ## Test Case [5/6]: FastInterpCoverage.TableOpcodes
 
-**File**: `smart-tests/fast-interp/fast_interp_coverage_test.cc`
+**File**: `llm-enhanced-test/fast-interp/fast_interp_coverage_test.cc`
 **Start line**: 228
 **Parameterized**: No
 
@@ -266,7 +266,7 @@ The test name "TableOpcodes" implies testing table operation correctness but the
 
 ## Test Case [6/6]: FastInterpCoverage.ConstantOpcodes
 
-**File**: `smart-tests/fast-interp/fast_interp_coverage_test.cc`
+**File**: `llm-enhanced-test/fast-interp/fast_interp_coverage_test.cc`
 **Start line**: 236
 **Parameterized**: No
 

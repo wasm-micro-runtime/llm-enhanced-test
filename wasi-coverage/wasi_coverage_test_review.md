@@ -15,7 +15,7 @@
 
 ## Test Case [1/34]: WasiCoverageTest.FdWriteStdout
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 162
 **Parameterized**: No
 
@@ -56,7 +56,7 @@ Test name "FdWriteStdout" matches the actual coverage of `wasi_fd_write` through
 
 ## Test Case [2/34]: WasiCoverageTest.FdWriteStderr
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 167
 **Parameterized**: No
 
@@ -95,7 +95,7 @@ Test name "FdWriteStderr" matches the actual coverage of `wasi_fd_write` targeti
 
 ## Test Case [3/34]: WasiCoverageTest.FdFdstatGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 172
 **Parameterized**: No
 
@@ -133,7 +133,7 @@ Test name "FdFdstatGet" matches actual coverage of `wasi_fd_fdstat_get`.
 
 ## Test Case [4/34]: WasiCoverageTest.FdPrestatGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 177
 **Parameterized**: No
 
@@ -171,7 +171,7 @@ Test name "FdPrestatGet" matches actual coverage of `wasi_fd_prestat_get`.
 
 ## Test Case [5/34]: WasiCoverageTest.FdPrestatDirName
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 182
 **Parameterized**: No
 
@@ -209,7 +209,7 @@ Test name "FdPrestatDirName" matches actual coverage of `wasi_fd_prestat_dir_nam
 
 ## Test Case [6/34]: WasiCoverageTest.FdFilestatGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 187
 **Parameterized**: No
 
@@ -247,7 +247,7 @@ Test name "FdFilestatGet" matches actual coverage of `wasi_fd_filestat_get`.
 
 ## Test Case [7/34]: WasiCoverageTest.FdSync
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 192
 **Parameterized**: No
 
@@ -285,7 +285,7 @@ Test name "FdSync" matches actual coverage of `wasi_fd_sync`.
 
 ## Test Case [8/34]: WasiCoverageTest.FdDatasync
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 197
 **Parameterized**: No
 
@@ -323,7 +323,7 @@ Test name "FdDatasync" matches actual coverage of `wasi_fd_datasync`.
 
 ## Test Case [9/34]: WasiCoverageTest.FdFdstatSetFlags
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 202
 **Parameterized**: No
 
@@ -361,7 +361,7 @@ Test name "FdFdstatSetFlags" matches actual coverage of `wasi_fd_fdstat_set_flag
 
 ## Test Case [10/34]: WasiCoverageTest.FdSeek
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 207
 **Parameterized**: No
 
@@ -399,7 +399,7 @@ Test name "FdSeek" matches actual coverage of `wasi_fd_seek`.
 
 ## Test Case [11/34]: WasiCoverageTest.FdTell
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 212
 **Parameterized**: No
 
@@ -437,7 +437,7 @@ Test name "FdTell" matches actual coverage of `wasi_fd_tell`.
 
 ## Test Case [12/34]: WasiCoverageTest.FdAdvise
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 217
 **Parameterized**: No
 
@@ -475,7 +475,7 @@ Test name "FdAdvise" matches actual coverage of `wasi_fd_advise`.
 
 ## Test Case [13/34]: WasiCoverageTest.AllFdOps
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 222
 **Parameterized**: No
 
@@ -516,7 +516,7 @@ Test name "AllFdOps" accurately describes running all FD operation exports.
 
 ## Test Case [14/34]: WasiCoverageTest.ArgsSizesGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 227
 **Parameterized**: No
 
@@ -553,7 +553,7 @@ Test name "ArgsSizesGet" matches actual coverage of `wasi_args_sizes_get`.
 
 ## Test Case [15/34]: WasiCoverageTest.ArgsGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 232
 **Parameterized**: No
 
@@ -592,7 +592,7 @@ Test name "ArgsGet" matches actual coverage of `wasi_args_get`.
 
 ## Test Case [16/34]: WasiCoverageTest.EnvironSizesGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 237
 **Parameterized**: No
 
@@ -630,7 +630,7 @@ Test name "EnvironSizesGet" matches actual coverage of `wasi_environ_sizes_get`.
 
 ## Test Case [17/34]: WasiCoverageTest.EnvironGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 242
 **Parameterized**: No
 
@@ -669,7 +669,7 @@ Test name "EnvironGet" matches actual coverage of `wasi_environ_get`.
 
 ## Test Case [18/34]: WasiCoverageTest.ClockResGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 247
 **Parameterized**: No
 
@@ -706,7 +706,7 @@ Test name "ClockResGet" matches actual coverage of `wasi_clock_res_get`.
 
 ## Test Case [19/34]: WasiCoverageTest.ClockTimeGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 252
 **Parameterized**: No
 
@@ -743,7 +743,7 @@ Test name "ClockTimeGet" matches actual coverage of `wasi_clock_time_get`.
 
 ## Test Case [20/34]: WasiCoverageTest.RandomGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 257
 **Parameterized**: No
 
@@ -780,7 +780,7 @@ Test name "RandomGet" matches actual coverage of `wasi_random_get`.
 
 ## Test Case [21/34]: WasiCoverageTest.SchedYield
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 262
 **Parameterized**: No
 
@@ -817,7 +817,7 @@ Test name "SchedYield" matches actual coverage of `wasi_sched_yield`.
 
 ## Test Case [22/34]: WasiCoverageTest.AllEnvArgs
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 267
 **Parameterized**: No
 
@@ -856,7 +856,7 @@ Test name "AllEnvArgs" accurately describes running all environment/arguments ex
 
 ## Test Case [23/34]: WasiCoverageTest.PathCreateDirectory
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 272
 **Parameterized**: No
 
@@ -895,7 +895,7 @@ Test name "PathCreateDirectory" matches actual coverage of `wasi_path_create_dir
 
 ## Test Case [24/34]: WasiCoverageTest.PathOpenCreate
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 277
 **Parameterized**: No
 
@@ -933,7 +933,7 @@ Test name "PathOpenCreate" matches actual coverage of `wasi_path_open` with crea
 
 ## Test Case [25/34]: WasiCoverageTest.FileWriteRead
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 282
 **Parameterized**: No
 
@@ -972,7 +972,7 @@ Test name "FileWriteRead" matches actual file write/read coverage.
 
 ## Test Case [26/34]: WasiCoverageTest.PathFilestatGet
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 287
 **Parameterized**: No
 
@@ -1010,7 +1010,7 @@ Test name "PathFilestatGet" matches actual coverage of `wasi_path_filestat_get`.
 
 ## Test Case [27/34]: WasiCoverageTest.FdReaddir
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 292
 **Parameterized**: No
 
@@ -1048,7 +1048,7 @@ Test name "FdReaddir" matches actual coverage of `wasi_fd_readdir`.
 
 ## Test Case [28/34]: WasiCoverageTest.PwritePread
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 297
 **Parameterized**: No
 
@@ -1086,7 +1086,7 @@ Test name "PwritePread" matches actual coverage of positional write/read operati
 
 ## Test Case [29/34]: WasiCoverageTest.PathUnlink
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 302
 **Parameterized**: No
 
@@ -1124,7 +1124,7 @@ Test name "PathUnlink" matches actual coverage of `wasi_path_unlink_file`.
 
 ## Test Case [30/34]: WasiCoverageTest.PathRename
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 307
 **Parameterized**: No
 
@@ -1166,7 +1166,7 @@ Test name "PathRename" matches actual coverage of `wasi_path_rename` and related
 
 ## Test Case [31/34]: WasiCoverageTest.AllPathOps
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 312
 **Parameterized**: No
 
@@ -1206,7 +1206,7 @@ Test name "AllPathOps" accurately describes running all path operation exports.
 
 ## Test Case [32/34]: WasiCoverageTest.PollClock
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 317
 **Parameterized**: No
 
@@ -1244,7 +1244,7 @@ Test name "PollClock" matches actual coverage of `wasi_poll_oneoff` with clock s
 
 ## Test Case [33/34]: WasiCoverageTest.PollFdRead
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 322
 **Parameterized**: No
 
@@ -1282,7 +1282,7 @@ Test name "PollFdRead" matches actual coverage of `wasi_poll_oneoff` with fd_rea
 
 ## Test Case [34/34]: WasiCoverageTest.AllPoll
 
-**File**: `smart-tests/wasi-coverage/wasi_coverage_test.cc`
+**File**: `llm-enhanced-test/wasi-coverage/wasi_coverage_test.cc`
 **Start line**: 327
 **Parameterized**: No
 
