@@ -551,6 +551,8 @@ protected:
 
         wasm_runtime_full_init(&init_args);
 
+        bh_log_set_verbose_level(BH_LOG_LEVEL_VERBOSE);
+
         module_inst = nullptr;
         error_buf[0] = '\0';
         simple_wasm_size = 0;
@@ -560,6 +562,8 @@ protected:
     }
 
     void TearDown() override {
+        bh_log_set_verbose_level(BH_LOG_LEVEL_WARNING);
+
         if (module_inst) {
             wasm_runtime_deinstantiate(module_inst);
             module_inst = nullptr;
@@ -1792,6 +1796,8 @@ protected:
 
         wasm_runtime_full_init(&init_args);
 
+        bh_log_set_verbose_level(BH_LOG_LEVEL_VERBOSE);
+
         module_inst = nullptr;
         exec_env = nullptr;
         error_buf[0] = '\0';
@@ -1800,6 +1806,8 @@ protected:
     }
 
     void TearDown() override {
+        bh_log_set_verbose_level(BH_LOG_LEVEL_WARNING);
+
         if (exec_env) {
             wasm_runtime_destroy_exec_env(exec_env);
             exec_env = nullptr;
