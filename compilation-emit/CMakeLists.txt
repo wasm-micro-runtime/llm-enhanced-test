@@ -65,6 +65,25 @@ add_executable (compilation-emit ${unit_test_sources})
 
 target_link_libraries (compilation-emit ${LLVM_AVAILABLE_LIBS} gtest_main )
 
+
+# Compile main.wat -> main.wasm if wat2wasm is available
+find_program(WAT2WASM wat2wasm)
+if(WAT2WASM)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
+        COMMAND ${WAT2WASM} ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wat
+                -o ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wat
+        COMMENT "Compiling main.wat to main.wasm"
+    )
+    add_custom_target(compilation-emit-main-wasm
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
+    )
+    add_dependencies(compilation-emit compilation-emit-main-wasm)
+else()
+    message(WARNING "wat2wasm not found, main.wasm will not be compiled from source")
+endif()
+
 add_custom_command(TARGET compilation-emit POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/*.wasm

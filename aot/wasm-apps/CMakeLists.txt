@@ -33,7 +33,11 @@ if(WAT2WASM)
     )
     
     # Create AOT files using wamrc
-    find_program(WAMRC wamrc HINTS ${CMAKE_BINARY_DIR}/../../../wamr-compiler/build)
+    find_program(WAMRC wamrc
+        HINTS
+            ${WAMRC_COMPILER_DIR}
+            ${CMAKE_BINARY_DIR}/../../../wamr-compiler/build
+    )
     
     if(WAMRC)
         add_custom_command(
