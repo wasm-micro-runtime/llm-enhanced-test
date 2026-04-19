@@ -62,13 +62,72 @@ target_link_libraries(aot ${LLVM_AVAILABLE_LIBS} gtest_main gmock)
 
 gtest_discover_tests(aot)
 
-# WAT→WASM→AOT compilation pipeline
+set(AOT_STATIC_FIXTURES
+    aot_loader_test.aot aot_loader_test.wasm aot_loader_test.wat
+    import_globals_test.aot import_globals_test.wasm import_globals_test.wat
+    memory_operations_enhanced.aot memory_operations_enhanced.wasm memory_operations_enhanced.wat
+    native_symbols_test.aot native_symbols_test.wasm native_symbols_test.wat
+    table_init_test.aot table_init_test.wasm table_init_test.wat
+)
+
+list(APPEND AOT_STATIC_FIXTURES
+    simple_function.wat
+    multi_function.wat
+    memory_operations.wat
+)
+
+set(_staged_files)
+foreach(_fixture ${AOT_STATIC_FIXTURES})
+    add_custom_command(
+        OUTPUT
+            ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
+            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}
+            ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}
+            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}
+        COMMENT "Staging wasm-apps/${_fixture}"
+    )
+    list(APPEND _staged_files
+        ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
+        ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
+    )
+endforeach()
+
+add_custom_target(aot_copy_wasm_apps ALL DEPENDS ${_staged_files})
+
 add_subdirectory(wasm-apps)
 
-# Copy pre-built wasm/aot files to build directory
-add_custom_command(TARGET aot POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    ${CMAKE_CURRENT_BINARY_DIR}/
-    COMMENT "Copy test wasm/aot files to build directory"
+set(AOT_REGENERATED_FIXTURES
+    simple_function.wasm simple_function.aot
+    multi_function.wasm multi_function.aot
+    memory_operations.wasm memory_operations.aot
 )
+if(TARGET aot_enhanced_wasm_files)
+    set(_flat_mirrors)
+    foreach(_fixture ${AOT_REGENERATED_FIXTURES})
+        add_custom_command(
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.stamp
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
+                ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
+            COMMAND ${CMAKE_COMMAND} -E touch
+                ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.stamp
+            DEPENDS aot_enhanced_wasm_files
+            COMMENT "Mirroring regenerated wasm-apps/${_fixture} to build root"
+        )
+        list(APPEND _flat_mirrors ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.stamp)
+    endforeach()
+    add_custom_target(aot_mirror_regenerated ALL DEPENDS ${_flat_mirrors})
+endif()
+
+add_dependencies(aot aot_copy_wasm_apps)
+if(TARGET aot_enhanced_wasm_files)
+    add_dependencies(aot aot_enhanced_wasm_files)
+endif()
+if(TARGET aot_mirror_regenerated)
+    add_dependencies(aot aot_mirror_regenerated)
+endif()
