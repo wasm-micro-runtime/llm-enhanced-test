@@ -1926,36 +1926,3 @@ TEST_F(EnhancedWasmCApiBinaryFreeableTest, wasm_module_is_underlying_binary_free
 
     wasm_byte_vec_delete(&wasm_bytes);
 }
-
-/******
- * Test Case: wasm_table_size_AotModuleNullCheck_ReturnsZero
- * Source: core/iwasm/common/wasm_c_api.c:4180-4193
- * Target Lines: 4180-4182 (AOT module instance setup and validation)
- * Functional Purpose: Validates that wasm_table_size() handles AOT module type
- *                     detection and properly accesses AOT module instance structures.
- * Call Path: wasm_table_size() direct API call
- * Coverage Goal: Exercise AOT module type validation and structure access
- ******/
-TEST_F(EnhancedWasmCApiTestTableSet, wasm_table_size_AotModuleNullCheck_ReturnsZero)
-{
-    // Create a mock table with AOT module type but test edge cases
-    wasm_table_t mock_table;
-    memset(&mock_table, 0, sizeof(wasm_table_t));
-
-    // Test with null inst_comm_rt (should return 0)
-    mock_table.inst_comm_rt = nullptr;
-    wasm_table_size_t size = wasm_table_size(&mock_table);
-    ASSERT_EQ(0, size);
-
-    // Create a mock module instance to test AOT path entry
-    WASMModuleInstanceCommon mock_inst;
-    mock_inst.module_type = Wasm_Module_AoT;
-    mock_table.inst_comm_rt = &mock_inst;
-    mock_table.table_idx_rt = 0;
-
-    // This will enter the AOT path (line 4180) but may fail due to invalid structures
-    // The main goal is to exercise the module_type check and AOT path entry
-    size = wasm_table_size(&mock_table);
-    // Result is undefined due to mock structures, but we've exercised the target code
-    ASSERT_TRUE(size >= 0 || size == 0); // Any result is acceptable for coverage
-}

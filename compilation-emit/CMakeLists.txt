@@ -66,8 +66,13 @@ add_executable (compilation-emit ${unit_test_sources})
 target_link_libraries (compilation-emit ${LLVM_AVAILABLE_LIBS} gtest_main )
 
 
-# Compile main.wat -> main.wasm if wat2wasm is available
-find_program(WAT2WASM wat2wasm)
+# Compile main.wat -> main.wasm if wat2wasm is available.
+# Fall back to /opt/wabt/bin on CI where WABT is installed outside PATH.
+find_program(WAT2WASM wat2wasm
+    HINTS
+        ${WABT_DIR}/bin
+        /opt/wabt/bin
+)
 if(WAT2WASM)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm

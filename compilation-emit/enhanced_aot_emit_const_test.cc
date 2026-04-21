@@ -142,16 +142,16 @@ TEST_F(EnhancedAotEmitConstTest, aot_compile_op_f32_const_IndirectMode_Success)
 }
 
 /******
- * Test Case: aot_compile_op_f32_const_ThumbArchitecture_IntrinsicEnabled_Success
+ * Test Case: aot_compile_op_f32_const_BuiltinIntrinsicEnabled_Success
  * Source: core/iwasm/compilation/aot_emit_const.c:66-113
- * Functional Purpose: Validates f32 constant compilation with thumb architecture target,
- *                     enabling intrinsic capabilities via disable_llvm_intrinsics flag.
+ * Functional Purpose: Validates f32 constant compilation when intrinsic capabilities
+ *                     are explicitly enabled via builtin intrinsic groups.
  *                     Exercises aot_intrinsic_check_capability returning true (line 761)
- *                     and additional aot_create_comp_context lines for thumb target setup.
+ *                     without depending on architecture-specific LLVM backends.
  * Call Path: aot_compile_op_f32_const() <- aot_compiler.c (during WASM_OP_F32_CONST)
- * Coverage Goal: Exercise thumb architecture intrinsic enablement path
+ * Coverage Goal: Exercise intrinsic-enabled indirect-mode constant emission path
  ******/
-TEST_F(EnhancedAotEmitConstTest, aot_compile_op_f32_const_ThumbArchitecture_IntrinsicEnabled_Success)
+TEST_F(EnhancedAotEmitConstTest, aot_compile_op_f32_const_BuiltinIntrinsicEnabled_Success)
 {
     const char *wasm_file = WASM_FILE;
     unsigned int wasm_file_size = 0;
@@ -163,7 +163,6 @@ TEST_F(EnhancedAotEmitConstTest, aot_compile_op_f32_const_ThumbArchitecture_Intr
     struct AOTCompContext *comp_ctx = nullptr;
     AOTCompOption option = {};
 
-    // Configure with thumb architecture (automatically enables I32_CONST intrinsic)
     option.opt_level = 3;
     option.size_level = 3;
     option.output_format = AOT_FORMAT_FILE;
@@ -174,10 +173,7 @@ TEST_F(EnhancedAotEmitConstTest, aot_compile_op_f32_const_ThumbArchitecture_Intr
     option.enable_ref_types = true;
     option.is_indirect_mode = true;  // Enable indirect mode for target lines
     option.disable_llvm_intrinsics = true;  // KEY: Enable WAMR intrinsic capabilities
-
-    // Use thumb architecture which auto-enables I32_CONST capability
-    option.target_arch = "thumb";
-    option.target_cpu = "cortex-m4";
+    option.builtin_intrinsics = "constop";  // Explicitly enable i32.const capability
 
     wasm_file_buf = (unsigned char *)bh_read_file_to_buffer(wasm_file, &wasm_file_size);
     ASSERT_NE(nullptr, wasm_file_buf);
@@ -194,11 +190,11 @@ TEST_F(EnhancedAotEmitConstTest, aot_compile_op_f32_const_ThumbArchitecture_Intr
     // Verify the setup enables the intrinsic path (lines 16 conditions)
     ASSERT_TRUE(comp_ctx->is_indirect_mode);
 
-    // Verify intrinsic capability is enabled for thumb architecture
+    // Verify intrinsic capability is enabled by builtin_intrinsics
     bool has_i32_const_capability = aot_intrinsic_check_capability(comp_ctx, "i32.const");
     ASSERT_TRUE(has_i32_const_capability);
 
-    // Compile with thumb architecture setup - exercises lines 16-22
+    // Compile with intrinsic-enabled setup - exercises lines 16-22
     bool compile_result = aot_compile_wasm(comp_ctx);
     ASSERT_TRUE(compile_result);
 

@@ -3,8 +3,11 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-# WAT to WASM conversion for enhanced AOT tests
-find_program(WAT2WASM wat2wasm)
+find_program(WAT2WASM wat2wasm
+    HINTS
+        ${WABT_DIR}/bin
+        /opt/wabt/bin
+)
 
 if(WAT2WASM)
     # Convert WAT files to WASM
