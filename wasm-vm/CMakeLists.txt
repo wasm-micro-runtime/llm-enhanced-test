@@ -5,15 +5,16 @@ cmake_minimum_required(VERSION 3.14)
 
 project(wasm_vm_runtime_lifecycle_test)
 
+wamr_unit_test_suite_run_modes(wasm-vm MODES classic-interp fast-interp aot)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 add_definitions(-Dattr_container_malloc=malloc)
 add_definitions(-Dattr_container_free=free)
 
 set(WAMR_BUILD_APP_FRAMEWORK 1)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 0)
-set(WAMR_BUILD_FAST_INTERP 1)
 set(WAMR_BUILD_APP_FRAMEWORK 1)
 set(CMAKE_BUILD_TYPE Debug)
 

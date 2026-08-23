@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project (compilation-emit)
 
+wamr_unit_test_suite_run_modes(compilation-emit MODES none)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions (-DRUN_ON_LINUX)
 
 add_definitions (-Dattr_container_malloc=malloc)
@@ -16,8 +21,6 @@ add_definitions (-DWASM_ENABLE_AOT_STACK_FRAME=1)
 set (WAMR_BUILD_LIBC_WASI 0)
 set (WAMR_BUILD_APP_FRAMEWORK 0)
 set (WAMR_BUILD_THREAD_MGR 1)
-set (WAMR_BUILD_INTERP 1)
-set (WAMR_BUILD_AOT 1)
 set (WAMR_BUILD_GC 1)
 set (WAMR_BUILD_REF_TYPES 1)
 
@@ -65,7 +68,6 @@ add_executable (compilation-emit ${unit_test_sources})
 
 target_link_libraries (compilation-emit ${LLVM_AVAILABLE_LIBS} gtest_main )
 
-
 # Compile main.wat -> main.wasm if wat2wasm is available.
 # Fall back to /opt/wabt/bin on CI where WABT is installed outside PATH.
 find_program(WAT2WASM wat2wasm
@@ -89,12 +91,11 @@ else()
     message(WARNING "wat2wasm not found, main.wasm will not be compiled from source")
 endif()
 
-add_custom_command(TARGET compilation-emit POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/*.wasm
-        ${CMAKE_CURRENT_BINARY_DIR}/
+wamr_unit_test_copy_wasm_files(compilation-emit
+        FILES ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
+        DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Copy test wasm files to the directory of google test"
-        )
+)
 
 include(GoogleTest)
 # NOTE: `compilation-emit` is a single gtest binary, and CTest runs each

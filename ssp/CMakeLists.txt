@@ -5,16 +5,16 @@ cmake_minimum_required(VERSION 3.14)
 
 project(test-ssp-unified)
 
+wamr_unit_test_suite_run_modes(ssp MODES classic-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 
 # Enhanced SSP test configuration with platform awareness
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
-set(WAMR_BUILD_AOT 0)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_FAST_INTERP 0)
-set(WAMR_BUILD_JIT 0)
-set(WAMR_BUILD_FAST_JIT 0)
 set(WAMR_BUILD_MEMORY64 0)
 set(WAMR_BUILD_SHARED_MEMORY 0)
 

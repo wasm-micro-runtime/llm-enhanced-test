@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project (compilation-jit)
 
+wamr_unit_test_suite_run_modes(compilation-jit MODES llvm-jit)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions (-DRUN_ON_LINUX)
 
 add_definitions (-Dattr_container_malloc=malloc)
@@ -13,24 +18,15 @@ add_definitions (-DWASM_ENABLE_WAMR_COMPILER=1)
 add_definitions (-DWASM_ENABLE_DUMP_CALL_STACK=1)
 add_definitions (-DWASM_ENABLE_AOT_STACK_FRAME=1)
 
-# Set WAMR build configuration BEFORE including unit_common.cmake
-# These must be set before config_common.cmake is included
-# Note: INTERP must be enabled because compilation requires interpreter functions
+# Set suite-specific WAMR configuration before including unit_common.cmake.
 set (WAMR_BUILD_PLATFORM "linux")
 set (WAMR_BUILD_TARGET "X86_64")
 set (WAMR_BUILD_LIBC_WASI 0)
 set (WAMR_BUILD_APP_FRAMEWORK 0)
 set (WAMR_BUILD_THREAD_MGR 1)
-set (WAMR_BUILD_AOT 1)
-set (WAMR_BUILD_INTERP 1)
 
 # The SIMD advanced compilation tests load `simd_test.wasm` which contains v128
 # value types. So we must enable SIMD support in the runtime loader/compiler.
-#
-# Note: When JIT is enabled, WAMR may force classic interpreter internally; keep
-# FAST_INTERP off here to avoid a misleading configuration.
-set (WAMR_BUILD_FAST_INTERP 0)
-set (WAMR_BUILD_JIT 1)
 set (WAMR_BUILD_SIMD 1)
 
 include (../../unit_common.cmake)
@@ -77,16 +73,12 @@ add_executable (compilation-jit ${unit_test_sources})
 
 target_link_libraries (compilation-jit ${LLVM_AVAILABLE_LIBS} gtest_main )
 
-add_custom_command(TARGET compilation-jit POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.wasm
-  ${CMAKE_CURRENT_BINARY_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/simd_test.wasm
-  ${CMAKE_CURRENT_BINARY_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/llvm_test.wasm
-  ${CMAKE_CURRENT_BINARY_DIR}
+wamr_unit_test_copy_wasm_files(compilation-jit
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.wasm
+    ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/simd_test.wasm
+    ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/llvm_test.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Copy WASM test files to the directory: build/compilation-jit."
 )
 

@@ -5,13 +5,13 @@ cmake_minimum_required(VERSION 3.14)
 
 project(fast-interp-coverage)
 
+wamr_unit_test_suite_run_modes(fast-interp MODES fast-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_FAST_INTERP 1)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 0)
-set(WAMR_BUILD_FAST_JIT 0)
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_LIBC_BUILTIN 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
@@ -61,9 +61,9 @@ foreach(WASM_DIR ${WASM_DIRS})
     if(EXISTS ${WASM_DIR})
         get_filename_component(PARENT_DIR ${WASM_DIR} DIRECTORY)
         get_filename_component(CATEGORY ${PARENT_DIR} NAME)
-        add_custom_command(TARGET fast_interp_coverage_test POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${CATEGORY}
-            COMMAND ${CMAKE_COMMAND} -E copy_directory ${WASM_DIR} ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${CATEGORY}
+        wamr_unit_test_copy_wasm_files(fast_interp_coverage_test
+            SOURCE_DIR ${WASM_DIR}
+            DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${CATEGORY}
             COMMENT "Copying ${CATEGORY} WASM files"
         )
     endif()

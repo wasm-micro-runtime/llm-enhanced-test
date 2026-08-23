@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project(interpreter-core)
 
+wamr_unit_test_suite_run_modes(interpreter-core MODES classic-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 add_definitions(-Dattr_container_malloc=malloc)
 add_definitions(-Dattr_container_free=free)
@@ -12,8 +17,6 @@ add_definitions(-Dattr_container_free=free)
 set(WAMR_BUILD_LIBC_WASI 0)
 set(WAMR_BUILD_LIBC_BUILTIN 1)
 set(WAMR_BUILD_APP_FRAMEWORK 1)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 0)
 
 if(WAMR_BUILD_TARGET MATCHES "X86_.*")
     add_definitions(-DBUILD_TARGET_X86=1)
@@ -95,10 +98,12 @@ target_compile_definitions(interpreter-core PRIVATE
     WASM_ENABLE_REF_TYPES=1
 )
 
-add_custom_command(TARGET interpreter-core POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
+file(GLOB INTERPRETER_CORE_WASM_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/*.wasm
-    ${CMAKE_CURRENT_BINARY_DIR}/
+)
+wamr_unit_test_copy_wasm_files(interpreter-core
+    FILES ${INTERPRETER_CORE_WASM_FILES}
+    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Copy test wasm files to build directory"
 )
 

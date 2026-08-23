@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project (interpreter-runtime)
 
+wamr_unit_test_suite_run_modes(interpreter-runtime MODES classic-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions (-DRUN_ON_LINUX)
 
 add_definitions (-Dattr_container_malloc=malloc)
@@ -13,8 +18,6 @@ add_definitions (-Dattr_container_free=free)
 
 set (WAMR_BUILD_LIBC_WASI 1)
 set (WAMR_BUILD_APP_FRAMEWORK 1)
-set (WAMR_BUILD_INTERP 1)
-set (WAMR_BUILD_AOT 0)
 set (WAMR_BUILD_THREAD_MGR 1)
 set (WAMR_BUILD_MULTI_MODULE 1)
 set (WAMR_BUILD_BULK_MEMORY 1)

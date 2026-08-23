@@ -4,6 +4,11 @@
 cmake_minimum_required (VERSION 3.14)
 project (llm-enhanced-test-wasm-c-api)
 
+wamr_unit_test_suite_run_modes(wasm-c-api MODES llvm-jit)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 ################  runtime settings  ################
 set(CMAKE_BUILD_TYPE Debug)
 set(WAMR_BUILD_PLATFORM "linux")
@@ -16,12 +21,9 @@ set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 if (NOT DEFINED WAMR_BUILD_TARGET)
   set(WAMR_BUILD_TARGET "X86_64")
 endif()
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 0)
+
 set(WAMR_BUILD_LIBC_BUILTIN 1)
 set(WAMR_BUILD_LIBC_WASI 0)
-set(WAMR_BUILD_FAST_INTERP 0)
 set(WAMR_BUILD_DUMP_CALL_STACK 1)
 
 # compiling and linking flags
@@ -85,7 +87,7 @@ add_executable(llm-enhanced-test-wasm-c-api
   enhanced_wasm_c_api_test.cc
 )
 
-target_link_libraries(llm-enhanced-test-wasm-c-api vmlib gtest_main)
+target_link_libraries(llm-enhanced-test-wasm-c-api vmlib ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(llm-enhanced-test-wasm-c-api)

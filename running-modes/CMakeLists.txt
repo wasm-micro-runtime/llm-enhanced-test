@@ -5,6 +5,13 @@ cmake_minimum_required(VERSION 3.14)
 
 project(llm-enhanced-test-running-modes)
 
+wamr_unit_test_suite_run_modes(running-modes
+  MODES llvm-jit
+)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 # Compile wasm modules
 add_subdirectory(wasm-apps)
 
@@ -12,8 +19,6 @@ add_definitions(-DRUN_ON_LINUX)
 
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
-set(WAMR_BUILD_JIT 1)
-set(WAMR_BUILD_FAST_JIT 1)
 
 # if only load this CMake other than load it as subdirectory
 include(../../unit_common.cmake)
@@ -59,9 +64,8 @@ target_link_libraries(llm-enhanced-test-running-modes ${LLVM_AVAILABLE_LIBS} gte
 gtest_discover_tests(llm-enhanced-test-running-modes)
 
 # Copy WASM test files to build directory for test execution
-add_custom_command(TARGET llm-enhanced-test-running-modes POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
+wamr_unit_test_copy_wasm_files(llm-enhanced-test-running-modes
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
+    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying WASM test files to build directory"
 )

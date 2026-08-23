@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project(runtime-common-wasi-mem64)
 
+wamr_unit_test_suite_run_modes(runtime-common-wasi-mem64 MODES aot)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 
 set(WAMR_BUILD_LIBC_WASI 1)
@@ -13,8 +18,6 @@ set(WAMR_BUILD_SHARED_MEMORY 1)
 set(WAMR_BUILD_MEMORY64 1)
 set(WAMR_BUILD_LIB_PTHREAD 1)
 set(WAMR_BUILD_THREAD_MGR 1)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
 
 include(../../unit_common.cmake)
 

@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project(llm-enhanced-test-posix)
 
+wamr_unit_test_suite_run_modes(posix MODES classic-interp fast-interp aot)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 
 set(WAMR_BUILD_LIBC_BUILTIN 1)
@@ -12,13 +17,10 @@ set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
 set(WAMR_BUILD_PLATFORM "linux")
 set(WAMR_BUILD_TARGET "X86_64")
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 0)
-set(WAMR_BUILD_FAST_INTERP 1)
 set(WAMR_BUILD_SHARED_MEMORY 1)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../unit_common.cmake)
+
 include(${IWASM_DIR}/compilation/iwasm_compl.cmake)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
