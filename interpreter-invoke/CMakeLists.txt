@@ -5,15 +5,17 @@ cmake_minimum_required(VERSION 3.14)
 
 project (interpreter-invoke)
 
+wamr_unit_test_suite_run_modes(interpreter-invoke MODES classic-interp fast-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions (-DRUN_ON_LINUX)
 
 add_definitions (-Dattr_container_malloc=malloc)
 add_definitions (-Dattr_container_free=free)
 # add_definitions (-DWASM_ENABLE_WAMR_COMPILER=1)
 
-set(WAMR_BUILD_AOT 0)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_JIT 0)
 set (WAMR_BUILD_LIBC_WASI 0)
 set (WAMR_BUILD_APP_FRAMEWORK 1)
 
@@ -38,12 +40,12 @@ add_executable (interpreter-invoke-fast ${unit_test_sources})
 target_compile_definitions(interpreter-invoke-fast PUBLIC -DWAMR_BUILD_FAST_INTERP=1)
 target_link_libraries (interpreter-invoke-fast gtest_main)
 
-# Copy WASM files to build directory for classic interpreter
-# fast interpreter uses the same WASM files
-add_custom_command(TARGET interpreter-invoke-classic POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
+file(GLOB INTERPRETER_INVOKE_WASM_FILES
     ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/*.wasm
-    ${CMAKE_CURRENT_BINARY_DIR}/
+)
+wamr_unit_test_copy_wasm_files(interpreter-invoke-classic
+    FILES ${INTERPRETER_INVOKE_WASM_FILES}
+    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Copy test wasm files to the directory of google test"
 )
 

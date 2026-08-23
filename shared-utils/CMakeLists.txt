@@ -5,12 +5,15 @@ cmake_minimum_required(VERSION 3.14)
 
 project(shared-utils-enhanced-coverage)
 
+wamr_unit_test_suite_run_modes(shared-utils MODES classic-interp aot)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 
 set(WAMR_BUILD_LIBC_WASI 0)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
 
 include(../../unit_common.cmake)
 

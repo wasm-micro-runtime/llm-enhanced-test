@@ -5,13 +5,13 @@ cmake_minimum_required(VERSION 3.14)
 
 project(wasi-coverage-test)
 
+wamr_unit_test_suite_run_modes(wasi-coverage MODES classic-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_FAST_INTERP 0)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 0)
-set(WAMR_BUILD_FAST_JIT 0)
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_LIBC_BUILTIN 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
@@ -44,9 +44,8 @@ target_link_libraries(wasi_coverage_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 gtest_discover_tests(wasi_coverage_test)
 
-add_custom_command(TARGET wasi_coverage_test POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-        ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
+wamr_unit_test_copy_wasm_files(wasi_coverage_test
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
+    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying WASI test WASM files"
 )

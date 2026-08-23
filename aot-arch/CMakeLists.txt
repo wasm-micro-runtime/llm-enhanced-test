@@ -5,15 +5,16 @@ cmake_minimum_required(VERSION 3.14)
 
 project(llm-enhanced-tests-aot-arch)
 
+wamr_unit_test_suite_run_modes(aot-arch MODES aot)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 # Add the current directory to the module path
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 set(WAMR_BUILD_PLATFORM "linux")
 set(WAMR_BUILD_TARGET "X86_64")
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_FAST_INTERP 0)
-set(WAMR_BUILD_JIT 0)
 set(WAMR_BUILD_LIBC_WASI 0)
 set(WAMR_BUILD_LIBC_BUILTIN 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)

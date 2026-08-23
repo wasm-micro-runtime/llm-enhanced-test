@@ -5,6 +5,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project(runtime-common-reftypes-multimod)
 
+wamr_unit_test_suite_run_modes(runtime-common-reftypes-multimod MODES none)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 add_definitions(-DRUN_ON_LINUX)
 
 set(WAMR_BUILD_LIBC_WASI 0)
@@ -13,8 +18,6 @@ set(WAMR_BUILD_REF_TYPES 1)
 set(WAMR_BUILD_THREAD_MGR 1)
 set(WAMR_BUILD_SHARED_MEMORY 1)
 set(WAMR_BUILD_MULTI_MODULE 1)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
 
 add_definitions(-DWASM_ENABLE_MEMORY_PROFILING=1)
 add_definitions(-DWASM_ENABLE_MEMORY_TRACING=1)
@@ -35,6 +38,7 @@ message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${IWASM_DIR}/interpreter)
 
 file(GLOB_RECURSE source_all ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
@@ -78,10 +82,11 @@ add_custom_target(
 
 add_dependencies(runtime-common-reftypes-multimod LlmEnhancedTestBuildAot)
 
-add_custom_command(TARGET runtime-common-reftypes-multimod POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-  ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.wasm ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.aot
-  ${CMAKE_CURRENT_BINARY_DIR}
+wamr_unit_test_copy_wasm_files(runtime-common-reftypes-multimod
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.wasm
+    ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.aot
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Copy main.wasm and main.aot to the directory: build/runtime-common."
 )
 

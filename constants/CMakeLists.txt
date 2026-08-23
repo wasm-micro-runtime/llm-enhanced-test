@@ -5,11 +5,12 @@ cmake_minimum_required(VERSION 3.14)
 
 project(enhanced_constants_test)
 
+wamr_unit_test_suite_run_modes(constants MODES classic-interp llvm-jit)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 # WAMR build flags for enhanced constant opcode testing (i32.const, i64.const, f32.const, f64.const)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 1)
-set(WAMR_BUILD_FAST_JIT 0)
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
 set(WAMR_BUILD_MEMORY_PROFILING 0)
@@ -72,24 +73,21 @@ target_link_libraries(enhanced_f32_const_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 target_link_libraries(enhanced_f64_const_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 # Post-build: Copy WASM test files to build directory for all tests
-add_custom_command(TARGET enhanced_i32_const_test POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-        $<TARGET_FILE_DIR:enhanced_i32_const_test>/wasm-apps
+wamr_unit_test_copy_wasm_files(enhanced_i32_const_test
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
+    DEST_DIR $<TARGET_FILE_DIR:enhanced_i32_const_test>/wasm-apps
     COMMENT "Copying WASM test files to i32_const test build directory"
 )
 
-add_custom_command(TARGET enhanced_f32_const_test POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-        $<TARGET_FILE_DIR:enhanced_f32_const_test>/wasm-apps
+wamr_unit_test_copy_wasm_files(enhanced_f32_const_test
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
+    DEST_DIR $<TARGET_FILE_DIR:enhanced_f32_const_test>/wasm-apps
     COMMENT "Copying WASM test files to f32_const test build directory"
 )
 
-add_custom_command(TARGET enhanced_f64_const_test POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-        $<TARGET_FILE_DIR:enhanced_f64_const_test>/wasm-apps
+wamr_unit_test_copy_wasm_files(enhanced_f64_const_test
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
+    DEST_DIR $<TARGET_FILE_DIR:enhanced_f64_const_test>/wasm-apps
     COMMENT "Copying WASM test files to f64_const test build directory"
 )
 

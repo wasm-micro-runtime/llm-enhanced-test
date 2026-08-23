@@ -5,11 +5,12 @@ cmake_minimum_required(VERSION 3.14)
 
 project(test-enhanced-reference-opcodes)
 
+wamr_unit_test_suite_run_modes(reference MODES classic-interp llvm-jit)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 # Enable required WAMR build flags for reference type opcodes (any.convert_extern, extern.convert_any, table operations)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 1)
-set(WAMR_BUILD_FAST_JIT 0)
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
 set(WAMR_BUILD_MEMORY_PROFILING 0)
@@ -75,9 +76,8 @@ include(GoogleTest)
 gtest_discover_tests(enhanced_reference_test)
 
 # Copy WASM test files to build directory for test execution
-add_custom_command(TARGET enhanced_reference_test POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
+wamr_unit_test_copy_wasm_files(enhanced_reference_test
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
+    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying WASM test files to build directory"
 )

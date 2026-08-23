@@ -5,10 +5,13 @@ cmake_minimum_required(VERSION 3.14)
 
 project(thread_mgr_enhanced_tests)
 
+wamr_unit_test_suite_run_modes(thread-mgr MODES classic-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 # Enable thread manager features for all tests
 set(WAMR_BUILD_THREAD_MGR 1)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
 
 # Include common unit test configuration
 include(../../unit_common.cmake)

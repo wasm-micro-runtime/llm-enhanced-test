@@ -6,11 +6,12 @@ cmake_minimum_required(VERSION 3.14)
 
 project(test-enhanced-extension-opcodes)
 
+wamr_unit_test_suite_run_modes(extension MODES llvm-jit)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
 # Enable required WAMR build features for SIMD opcode testing (i8x16.splat, i16x8.splat, i32x4.splat, f64x2.extmul_high_i32x4_s, f64x2.extmul_high_i32x4_u, i16x8.extmul_high_i8x16_u)
-set(WAMR_BUILD_INTERP 1)
-set(WAMR_BUILD_AOT 1)
-set(WAMR_BUILD_JIT 1)
-set(WAMR_BUILD_FAST_JIT 0)
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_APP_FRAMEWORK 0)
 set(WAMR_BUILD_MEMORY_PROFILING 0)
@@ -78,11 +79,9 @@ gtest_discover_tests(enhanced_f64x2_extmul_high_i32x4_s_test)
 gtest_discover_tests(enhanced_f64x2_extmul_high_i32x4_u_test)
 gtest_discover_tests(enhanced_i16x8_extmul_high_i8x16_u_test)
 
-# Create a custom target to copy WASM test files once for all tests
-add_custom_target(copy_extension_wasm_apps ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
+wamr_unit_test_add_wasm_copy_target(copy_extension_wasm_apps
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
+    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying SIMD WASM test files to build directory"
 )
 
