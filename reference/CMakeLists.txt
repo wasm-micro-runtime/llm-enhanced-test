@@ -81,3 +81,35 @@ wamr_unit_test_copy_wasm_files(enhanced_reference_test
     DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying WASM test files to build directory"
 )
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/any_convert_extern_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/any_convert_extern_stack_underflow.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/any_convert_extern_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/any_convert_extern_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/call_ref_null_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/call_ref_null_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/call_ref_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/call_ref_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/extern_convert_any_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/extern_convert_any_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/ref_as_non_null_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/ref_as_non_null_stack_underflow.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/ref_as_non_null_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/ref_as_non_null_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/ref_eq_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/ref_eq_stack_underflow.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/ref_eq_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/ref_eq_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/table_get_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/table_get_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/table_size_invalid_index.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/table_size_invalid_index.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/table_size_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/table_size_test.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET enhanced_reference_test
+        SOURCE ${_fixture_source}
+        OUTPUT ${_fixture_output}
+    )
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)

@@ -98,14 +98,37 @@ target_compile_definitions(interpreter-core PRIVATE
     WASM_ENABLE_REF_TYPES=1
 )
 
-file(GLOB INTERPRETER_CORE_WASM_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/*.wasm
-)
-wamr_unit_test_copy_wasm_files(interpreter-core
-    FILES ${INTERPRETER_CORE_WASM_FILES}
-    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Copy test wasm files to build directory"
-)
-
 include(GoogleTest)
 gtest_discover_tests(interpreter-core)
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/arithmetic_bitwise.wat|${CMAKE_CURRENT_BINARY_DIR}/arithmetic_bitwise.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/complex_sections_module.wat|${CMAKE_CURRENT_BINARY_DIR}/complex_sections_module.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/datacount_test.wat|${CMAKE_CURRENT_BINARY_DIR}/datacount_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/empty_table_segments.wat|${CMAKE_CURRENT_BINARY_DIR}/empty_table_segments.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/floating_point_operations.wat|${CMAKE_CURRENT_BINARY_DIR}/floating_point_operations.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/function_invocation_test.wat|${CMAKE_CURRENT_BINARY_DIR}/function_invocation_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/import_export_module.wat|${CMAKE_CURRENT_BINARY_DIR}/import_export_module.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/invalid_magic_number.wat|${CMAKE_CURRENT_BINARY_DIR}/invalid_magic_number.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/multiple_table_types.wat|${CMAKE_CURRENT_BINARY_DIR}/multiple_table_types.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/simd_shuffle_test.wat|${CMAKE_CURRENT_BINARY_DIR}/simd_shuffle_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/table_validation_test.wat|${CMAKE_CURRENT_BINARY_DIR}/table_validation_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/valid_basic_module.wat|${CMAKE_CURRENT_BINARY_DIR}/valid_basic_module.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET interpreter-core
+        SOURCE ${_fixture_source}
+        OUTPUT ${_fixture_output}
+    )
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)

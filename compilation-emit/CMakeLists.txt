@@ -68,35 +68,6 @@ add_executable (compilation-emit ${unit_test_sources})
 
 target_link_libraries (compilation-emit ${LLVM_AVAILABLE_LIBS} gtest_main )
 
-# Compile main.wat -> main.wasm if wat2wasm is available.
-# Fall back to /opt/wabt/bin on CI where WABT is installed outside PATH.
-find_program(WAT2WASM wat2wasm
-    HINTS
-        ${WABT_DIR}/bin
-        /opt/wabt/bin
-)
-if(WAT2WASM)
-    add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
-        COMMAND ${WAT2WASM} ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wat
-                -o ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wat
-        COMMENT "Compiling main.wat to main.wasm"
-    )
-    add_custom_target(compilation-emit-main-wasm
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
-    )
-    add_dependencies(compilation-emit compilation-emit-main-wasm)
-else()
-    message(WARNING "wat2wasm not found, main.wasm will not be compiled from source")
-endif()
-
-wamr_unit_test_copy_wasm_files(compilation-emit
-        FILES ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wasm
-        DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Copy test wasm files to the directory of google test"
-)
-
 include(GoogleTest)
 # NOTE: `compilation-emit` is a single gtest binary, and CTest runs each
 # discovered test as a separate process with a gtest filter. When code coverage
@@ -105,3 +76,44 @@ include(GoogleTest)
 # tests to make `ctest --parallel` stable.
 gtest_discover_tests(compilation-emit
                      PROPERTIES RUN_SERIAL TRUE)
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/conversion_test.wat|${CMAKE_CURRENT_BINARY_DIR}/conversion_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32_const_test.wat|${CMAKE_CURRENT_BINARY_DIR}/f32_const_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32_convert_i32_test.wat|${CMAKE_CURRENT_BINARY_DIR}/f32_convert_i32_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32_convert_i64_test.wat|${CMAKE_CURRENT_BINARY_DIR}/f32_convert_i64_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32_demote_f64.wat|${CMAKE_CURRENT_BINARY_DIR}/f32_demote_f64_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_convert_s_i64.wat|${CMAKE_CURRENT_BINARY_DIR}/f64_convert_s_i64_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_convert_u_i64.wat|${CMAKE_CURRENT_BINARY_DIR}/f64_convert_u_i64_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_promote_f32_test.wat|${CMAKE_CURRENT_BINARY_DIR}/f64_promote_f32_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_extend16s.wat|${CMAKE_CURRENT_BINARY_DIR}/i32_extend16s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_extend8s.wat|${CMAKE_CURRENT_BINARY_DIR}/i32_extend8s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_extend_combined.wat|${CMAKE_CURRENT_BINARY_DIR}/i32_extend_combined_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_trunc_f32_test.wat|${CMAKE_CURRENT_BINARY_DIR}/i32_trunc_f32_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_trunc_f64_test.wat|${CMAKE_CURRENT_BINARY_DIR}/i32_trunc_f64_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_extend16s.wat|${CMAKE_CURRENT_BINARY_DIR}/i64_extend16s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_extend32s.wat|${CMAKE_CURRENT_BINARY_DIR}/i64_extend32s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_extend8s.wat|${CMAKE_CURRENT_BINARY_DIR}/i64_extend8s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_extend_combined.wat|${CMAKE_CURRENT_BINARY_DIR}/i64_extend_combined_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_extend_i32_test.wat|${CMAKE_CURRENT_BINARY_DIR}/i64_extend_i32_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_trunc_f32_test.wat|${CMAKE_CURRENT_BINARY_DIR}/i64_trunc_f32_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_trunc_f64_test.wat|${CMAKE_CURRENT_BINARY_DIR}/i64_trunc_f64_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/main.wat|${CMAKE_CURRENT_BINARY_DIR}/main.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET compilation-emit
+        SOURCE ${_fixture_source}
+        OUTPUT ${_fixture_output}
+    )
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)

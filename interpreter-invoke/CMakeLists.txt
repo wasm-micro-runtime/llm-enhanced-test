@@ -40,14 +40,31 @@ add_executable (interpreter-invoke-fast ${unit_test_sources})
 target_compile_definitions(interpreter-invoke-fast PUBLIC -DWAMR_BUILD_FAST_INTERP=1)
 target_link_libraries (interpreter-invoke-fast gtest_main)
 
-file(GLOB INTERPRETER_INVOKE_WASM_FILES
-    ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/*.wasm
-)
-wamr_unit_test_copy_wasm_files(interpreter-invoke-classic
-    FILES ${INTERPRETER_INVOKE_WASM_FILES}
-    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Copy test wasm files to the directory of google test"
-)
-
 gtest_discover_tests(interpreter-invoke-classic)
 gtest_discover_tests(interpreter-invoke-fast)
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/function_invocation_test.wat|${CMAKE_CURRENT_BINARY_DIR}/function_invocation_test.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    foreach(_fixture_target
+            interpreter-invoke-classic
+            interpreter-invoke-fast)
+        wamr_unit_test_compile_wat_to_wasm(
+            TARGET ${_fixture_target}
+            SOURCE ${_fixture_source}
+            OUTPUT ${_fixture_output}
+        )
+    endforeach()
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_target)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)
