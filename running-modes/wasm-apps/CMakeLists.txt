@@ -4,13 +4,28 @@
 cmake_minimum_required(VERSION 3.14)
 project(wasm-apps)
 
-# Copy pre-compiled WASM test files to parent directory for test execution
-add_custom_target(copy_wasm_files ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_CURRENT_SOURCE_DIR}/i32_add_test.wasm
-        ${CMAKE_CURRENT_BINARY_DIR}/../i32_add_test.wasm
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_CURRENT_SOURCE_DIR}/i32_add_test.wat
-        ${CMAKE_CURRENT_BINARY_DIR}/../i32_add_test.wat
-    COMMENT "Copy i32_add_test WASM files to the same directory as google test"
+add_executable(mytest.wasm mytest.c)
+target_compile_options(mytest.wasm PUBLIC -nostdlib)
+target_link_options(mytest.wasm PRIVATE
+  -nostdlib
+  LINKER:--allow-undefined
+  LINKER:--export-all
+  LINKER:--initial-memory=131072
+  LINKER:--no-entry
+)
+
+add_executable(hello.wasm hello.c)
+target_compile_options(hello.wasm PUBLIC -nostdlib)
+target_link_options(hello.wasm PRIVATE
+  -nostdlib
+  LINKER:--allow-undefined
+  LINKER:--export-all
+  LINKER:--initial-memory=131072
+  LINKER:--no-entry
+)
+
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/hello.wasm
+  ${CMAKE_CURRENT_BINARY_DIR}/mytest.wasm
+  DESTINATION .
 )

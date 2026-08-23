@@ -59,72 +59,55 @@ target_link_libraries(aot ${LLVM_AVAILABLE_LIBS} gtest_main gmock)
 
 gtest_discover_tests(aot)
 
-set(AOT_STATIC_FIXTURES
-    aot_loader_test.aot aot_loader_test.wasm aot_loader_test.wat
-    import_globals_test.aot import_globals_test.wasm import_globals_test.wat
-    memory_operations_enhanced.aot memory_operations_enhanced.wasm memory_operations_enhanced.wat
-    native_symbols_test.aot native_symbols_test.wasm native_symbols_test.wat
-    table_init_test.aot table_init_test.wasm table_init_test.wat
+set(AOT_WAT_FIXTURES
+    aot_loader_test
+    import_globals_test
+    memory_operations
+    memory_operations_enhanced
+    multi_function
+    native_symbols_test
+    simple_function
+    table_init_test
 )
 
-list(APPEND AOT_STATIC_FIXTURES
-    simple_function.wat
-    multi_function.wat
-    memory_operations.wat
-)
+set(_aot_flat_mirrors)
+foreach(_fixture ${AOT_WAT_FIXTURES})
+    set(_wasm_output ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}.wasm)
+    set(_aot_output ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}.aot)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET aot
+        SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}.wat
+        OUTPUT ${_wasm_output}
+    )
+    wamr_unit_test_compile_wasm_to_aot(
+        TARGET aot
+        INPUT ${_wasm_output}
+        OUTPUT ${_aot_output}
+    )
 
-set(_staged_files)
-foreach(_fixture ${AOT_STATIC_FIXTURES})
     add_custom_command(
         OUTPUT
-            ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
-            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}
-            ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}
-            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}
-        COMMENT "Staging wasm-apps/${_fixture}"
+            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.wasm
+            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.aot
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${_wasm_output}
+            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.wasm
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${_aot_output}
+            ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.aot
+        DEPENDS ${_wasm_output} ${_aot_output}
+        COMMENT "Mirroring generated ${_fixture} wasm/aot to build root"
     )
-    list(APPEND _staged_files
-        ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
-        ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
+    list(APPEND _aot_flat_mirrors
+        ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.wasm
+        ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.aot
     )
 endforeach()
 
-add_custom_target(aot_copy_wasm_apps ALL DEPENDS ${_staged_files})
+add_custom_target(aot_mirror_generated ALL DEPENDS ${_aot_flat_mirrors})
+add_dependencies(aot aot_mirror_generated)
 
-add_subdirectory(wasm-apps)
-
-set(AOT_REGENERATED_FIXTURES
-    simple_function.wasm simple_function.aot
-    multi_function.wasm multi_function.aot
-    memory_operations.wasm memory_operations.aot
-)
-if(TARGET aot_enhanced_wasm_files)
-    set(_flat_mirrors)
-    foreach(_fixture ${AOT_REGENERATED_FIXTURES})
-        add_custom_command(
-            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.stamp
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${_fixture}
-                ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}
-            COMMAND ${CMAKE_COMMAND} -E touch
-                ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.stamp
-            DEPENDS aot_enhanced_wasm_files
-            COMMENT "Mirroring regenerated wasm-apps/${_fixture} to build root"
-        )
-        list(APPEND _flat_mirrors ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.stamp)
-    endforeach()
-    add_custom_target(aot_mirror_regenerated ALL DEPENDS ${_flat_mirrors})
-endif()
-
-add_dependencies(aot aot_copy_wasm_apps)
-if(TARGET aot_enhanced_wasm_files)
-    add_dependencies(aot aot_enhanced_wasm_files)
-endif()
-if(TARGET aot_mirror_regenerated)
-    add_dependencies(aot aot_mirror_regenerated)
-endif()
+unset(_aot_flat_mirrors)
+unset(_fixture)
+unset(_wasm_output)
+unset(_aot_output)

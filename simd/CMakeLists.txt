@@ -145,3 +145,112 @@ wamr_unit_test_copy_wasm_files(enhanced_simd_test
     DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying WASM test files to build directory"
 )
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_abs_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_abs_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_ceil_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_ceil_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_div_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_div_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_eq_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_eq_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_extract_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_extract_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_floor_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_floor_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_max_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_max_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_min_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_min_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_ne_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_ne_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_nearest_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_nearest_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_neg_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_neg_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_pmax_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_pmax_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_pmin_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_pmin_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_replace_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_replace_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32x4_trunc_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32x4_trunc_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_abs_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_abs_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_ceil_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_ceil_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_convert_low_i32x4_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_convert_low_i32x4_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_demote_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_demote_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_eq_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_eq_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_extmul_low_i32x4_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_extmul_low_i32x4_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_extract_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_extract_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_floor_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_floor_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_max_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_max_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_min_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_min_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_ne_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_ne_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_nearest_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_nearest_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_neg_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_neg_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_pmax_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_pmax_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_pmin_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_pmin_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_promote_low_f32x4_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_promote_low_f32x4_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_sqrt_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_sqrt_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_sub_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_sub_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_trunc_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_trunc_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_abs_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_abs_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_extadd_pairwise_i8x16_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_extadd_pairwise_i8x16_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_extmul_high_i8x16_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_extmul_high_i8x16_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_extmul_low_i8x16_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_extmul_low_i8x16_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_narrow_i32x4_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_narrow_i32x4_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_q15mulr_sat_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_q15mulr_sat_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_abs_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_abs_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_dot_i16x8_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_dot_i16x8_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_extadd_pairwise_i16x8_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_extadd_pairwise_i16x8_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_extend_low_i16x8_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_extend_low_i16x8_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_extmul_high_i16x8_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_extmul_high_i16x8_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_extmul_high_i16x8_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_extmul_high_i16x8_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_extmul_low_i16x8_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_extmul_low_i16x8_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_extmul_low_i16x8_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_extmul_low_i16x8_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_lt_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_lt_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_lt_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_lt_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_trunc_sat_f64x2_s_zero_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_trunc_sat_f64x2_s_zero_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_trunc_sat_f64x2_u_zero_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_trunc_sat_f64x2_u_zero_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64x2_extend_high_i32x4_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64x2_extend_high_i32x4_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64x2_extmul_low_i32x4_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64x2_extmul_low_i32x4_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64x2_gt_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64x2_gt_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64x2_shl_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64x2_shl_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64x2_sub_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64x2_sub_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_abs_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_abs_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_all_true_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_all_true_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_avgr_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_avgr_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_bitmask_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_bitmask_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_eq_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_eq_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_extract_lane_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_extract_lane_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_narrow_i16x8_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_narrow_i16x8_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_ne_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_ne_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_popcnt_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_popcnt_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_shl_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_shl_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_shuffle_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_shuffle_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_sub_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_sub_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_swizzle_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_swizzle_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_and_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_and_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_andnot_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_andnot_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_any_true_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_any_true_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_bitselect_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_bitselect_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load16_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load16_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load32_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load32_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load32_zero_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load32_zero_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load64_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load64_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load64_zero_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load64_zero_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load8_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load8_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load8x8_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load8x8_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load8x8_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load8x8_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_not_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_not_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_or_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_or_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_store16_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_store16_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_store32_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_store32_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_store64_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_store64_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_store8_lane_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_store8_lane_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_xor_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_xor_test.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET enhanced_simd_test
+        SOURCE ${_fixture_source}
+        OUTPUT ${_fixture_output}
+    )
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)

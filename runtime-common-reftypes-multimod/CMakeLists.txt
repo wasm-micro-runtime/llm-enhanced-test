@@ -63,31 +63,17 @@ add_executable(runtime-common-reftypes-multimod ${unit_test_sources})
 
 target_link_libraries(runtime-common-reftypes-multimod ${LLVM_AVAILABLE_LIBS} gtest_main gmock)
 
-# Ensure that aot compiled is completed before linear_memory_test_aot is built
-set(dummy_output "${CMAKE_CURRENT_BINARY_DIR}/dummy_output")
-
-add_custom_command(OUTPUT ${dummy_output}
-  COMMAND ./build_aot.sh
-  COMMAND ${CMAKE_COMMAND} -E touch ${dummy_output}
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/build_aot.sh
-  COMMENT "Executing script to compile aot files"
-  VERBATIM
-)
-
-add_custom_target(
-  LlmEnhancedTestBuildAot ALL
-  DEPENDS ${dummy_output}
-)
-
-add_dependencies(runtime-common-reftypes-multimod LlmEnhancedTestBuildAot)
-
 wamr_unit_test_copy_wasm_files(runtime-common-reftypes-multimod
   FILES
     ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.wasm
-    ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.aot
   DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Copy main.wasm and main.aot to the directory: build/runtime-common."
+  COMMENT "Copy main.wasm to the directory: build/runtime-common."
+)
+
+wamr_unit_test_compile_wasm_to_aot(
+  TARGET runtime-common-reftypes-multimod
+  INPUT ${CMAKE_CURRENT_LIST_DIR}/wasm-apps/main.wasm
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/main.aot
 )
 
 # Skip gtest_discover_tests for now to avoid build issues

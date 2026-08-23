@@ -80,3 +80,58 @@ wamr_unit_test_copy_wasm_files(enhanced_memory_opcodes_test
     DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying WASM test files to build directory"
 )
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32_load_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32_load_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32_store_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f32_store_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_load_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64_load_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_store_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64_store_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_load16_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_load16_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_load16_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_load16_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_load8_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_load8_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_load8_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_load8_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_load_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_load_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_store16_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_store16_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_store8_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_store8_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32_store_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32_store_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_load16_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_load16_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_load16_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_load16_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_load32_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_load32_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_load32_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_load32_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_load8_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_load8_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_load8_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_load8_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_load_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_load_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_store16_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_store16_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_store32_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_store32_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_store8_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_store8_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_store_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64_store_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_copy_error_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_copy_error_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_copy_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_copy_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_fill_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_fill_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_grow_limited_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_grow_limited_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_grow_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_grow_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_init_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_init_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_size_0page_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_size_0page_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_size_1000page_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_size_1000page_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_size_16page_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_size_16page_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_size_1page_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_size_1page_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_size_4page_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_size_4page_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/memory_size_limited_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory_size_limited_test.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET enhanced_memory_opcodes_test
+        SOURCE ${_fixture_source}
+        OUTPUT ${_fixture_output}
+    )
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)

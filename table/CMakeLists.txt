@@ -73,3 +73,26 @@ wamr_unit_test_copy_wasm_files(enhanced_table_opcodes_test
     DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
     COMMENT "Copying WASM test files to build directory"
 )
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/elem_drop_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/elem_drop_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/table_drop_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/table_drop_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/table_init_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/table_init_test.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET enhanced_table_opcodes_test
+        SOURCE ${_fixture_source}
+        OUTPUT ${_fixture_output}
+    )
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)

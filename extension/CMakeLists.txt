@@ -91,3 +91,38 @@ add_dependencies(enhanced_i16x8_splat_test copy_extension_wasm_apps)
 add_dependencies(enhanced_f64x2_extmul_high_i32x4_s_test copy_extension_wasm_apps)
 add_dependencies(enhanced_f64x2_extmul_high_i32x4_u_test copy_extension_wasm_apps)
 add_dependencies(enhanced_i16x8_extmul_high_i8x16_u_test copy_extension_wasm_apps)
+
+# Generated WASM fixture declarations
+
+# Generate tracked WASM fixtures from WAT/WAST sources.
+set(_generated_wasm_fixtures
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_extmul_high_i32x4_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_extmul_high_i32x4_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_extmul_high_i32x4_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_extmul_high_i32x4_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64x2_splat_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/f64x2_splat_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_extmul_high_i8x16_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_extmul_high_i8x16_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_splat_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i16x8_splat_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_splat_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_splat_stack_underflow.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i32x4_splat_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i32x4_splat_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64x2_splat_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64x2_splat_stack_underflow.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64x2_splat_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i64x2_splat_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_lt_s_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_lt_s_stack_underflow.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_lt_s_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_lt_s_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_lt_u_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_lt_u_stack_underflow.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_lt_u_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_lt_u_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i8x16_splat_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/i8x16_splat_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/v128_load_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/v128_load_test.wasm
+)
+foreach(_fixture IN LISTS _generated_wasm_fixtures)
+    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
+    list(GET _fixture_parts 0 _fixture_source)
+    list(GET _fixture_parts 1 _fixture_output)
+    wamr_unit_test_compile_wat_to_wasm(
+        TARGET copy_extension_wasm_apps
+        SOURCE ${_fixture_source}
+        OUTPUT ${_fixture_output}
+    )
+endforeach()
+unset(_generated_wasm_fixtures)
+unset(_fixture_parts)
+unset(_fixture_source)
+unset(_fixture_output)
