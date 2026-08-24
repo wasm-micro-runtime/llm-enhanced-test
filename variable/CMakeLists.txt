@@ -81,7 +81,6 @@ set(_generated_wasm_fixtures
     ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/global_set_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/global_set_test.wasm
     ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/local_get_invalid_index_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/local_get_invalid_index_test.wasm
     ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/local_get_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/local_get_test.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/local_set_invalid_index_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/local_set_invalid_index_test.wasm
     ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/local_set_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/local_set_test.wasm
     ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/local_tee_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/local_tee_test.wasm
     ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/local_tee_type_mismatch_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/local_tee_type_mismatch_test.wasm
