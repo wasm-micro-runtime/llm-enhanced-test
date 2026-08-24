@@ -22,16 +22,6 @@ set(WAMR_BUILD_APP_FRAMEWORK 0)
 # Include the build config
 include(${CMAKE_CURRENT_LIST_DIR}/../../unit_common.cmake)
 
-# Set up LLVM for AOT compilation support
-set (LLVM_SRC_ROOT "${WAMR_ROOT_DIR}/core/deps/llvm")
-if (NOT EXISTS "${LLVM_SRC_ROOT}/build")
-  message (FATAL_ERROR "Cannot find LLVM dir: ${LLVM_SRC_ROOT}/build")
-endif ()
-set (CMAKE_PREFIX_PATH "${LLVM_SRC_ROOT}/build;${CMAKE_PREFIX_PATH}")
-find_package(LLVM REQUIRED CONFIG)
-include_directories(${LLVM_INCLUDE_DIRS})
-add_definitions(${LLVM_DEFINITIONS})
-
 # Set test target name
 set(TEST_TARGET aot_arch_tests)
 
