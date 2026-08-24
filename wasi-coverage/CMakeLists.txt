@@ -20,14 +20,6 @@ set(WAMR_BUILD_REF_TYPES 1)
 
 include(../../unit_common.cmake)
 
-set(LLVM_SRC_ROOT "${WAMR_ROOT_DIR}/core/deps/llvm")
-if (EXISTS "${LLVM_SRC_ROOT}/build")
-    set(CMAKE_PREFIX_PATH "${LLVM_SRC_ROOT}/build;${CMAKE_PREFIX_PATH}")
-    find_package(LLVM REQUIRED CONFIG)
-    include_directories(${LLVM_INCLUDE_DIRS})
-    add_definitions(${LLVM_DEFINITIONS})
-endif()
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB_RECURSE source_all ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
