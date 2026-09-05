@@ -1,22 +1,13 @@
 # Copyright (C) 2019 Intel Corporation.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.14)
-
-project(fast-interp-coverage)
-
 wamr_unit_test_suite_run_modes(fast-interp MODES fast-interp)
 if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-add_definitions(-DRUN_ON_LINUX)
-
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_LIBC_BUILTIN 1)
-set(WAMR_BUILD_APP_FRAMEWORK 0)
-set(WAMR_BUILD_MEMORY_PROFILING 0)
-set(WAMR_BUILD_BULK_MEMORY 1)
 set(WAMR_BUILD_REF_TYPES 1)
 set(WAMR_BUILD_TAIL_CALL 1)
 
@@ -201,7 +192,6 @@ unset(_fixture_parts)
 unset(_fixture_source)
 unset(_fixture_output)
 
-
 # Generate memory WASM fixtures from WAT/WAST sources.
 set(_generated_memory_wasm_fixtures
     ${CMAKE_CURRENT_SOURCE_DIR}/../memory/wasm-apps/f32_load_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/memory/f32_load_test.wasm
@@ -255,7 +245,6 @@ unset(_fixture_parts)
 unset(_fixture_source)
 unset(_fixture_output)
 
-
 # Generate control-flow WASM fixtures from WAT/WAST sources.
 set(_generated_control_flow_wasm_fixtures
     ${CMAKE_CURRENT_SOURCE_DIR}/../control-flow/wasm-apps/block_bt_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/control-flow/block_bt_test.wasm
@@ -284,7 +273,6 @@ unset(_fixture_parts)
 unset(_fixture_source)
 unset(_fixture_output)
 
-
 # Generate variable WASM fixtures from WAT/WAST sources.
 set(_generated_variable_wasm_fixtures
     ${CMAKE_CURRENT_SOURCE_DIR}/../variable/wasm-apps/drop_stack_underflow.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/variable/drop_stack_underflow.wasm
@@ -312,7 +300,6 @@ unset(_fixture_parts)
 unset(_fixture_source)
 unset(_fixture_output)
 
-
 # Generate table WASM fixtures from WAT/WAST sources.
 set(_generated_table_wasm_fixtures
     ${CMAKE_CURRENT_SOURCE_DIR}/../table/wasm-apps/elem_drop_test.wat|${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/table/elem_drop_test.wasm
@@ -333,7 +320,6 @@ unset(_generated_table_wasm_fixtures)
 unset(_fixture_parts)
 unset(_fixture_source)
 unset(_fixture_output)
-
 
 # Generate constants WASM fixtures from WAT/WAST sources.
 set(_generated_constants_wasm_fixtures
@@ -356,7 +342,6 @@ unset(_generated_constants_wasm_fixtures)
 unset(_fixture_parts)
 unset(_fixture_source)
 unset(_fixture_output)
-
 
 # Generate reference WASM fixtures from WAT/WAST sources.
 set(_generated_reference_wasm_fixtures
