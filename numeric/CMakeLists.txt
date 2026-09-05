@@ -1,21 +1,12 @@
 # Copyright (C) 2019 Intel Corporation.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.14)
-
-project(test-enhanced-numeric-opcodes)
-
 wamr_unit_test_suite_run_modes(numeric MODES llvm-jit)
 if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
 set(WAMR_BUILD_LIBC_WASI 1)
-set(WAMR_BUILD_APP_FRAMEWORK 0)
-set(WAMR_BUILD_MEMORY_PROFILING 0)
-
-# Platform-specific definitions
-add_definitions(-DRUN_ON_LINUX)
 
 # Include shared unit test configuration
 include(../../unit_common.cmake)

@@ -1,21 +1,13 @@
 # Copyright (C) 2019 Intel Corporation.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.14)
-
-project(wasi-coverage-test)
-
 wamr_unit_test_suite_run_modes(wasi-coverage MODES classic-interp)
 if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-add_definitions(-DRUN_ON_LINUX)
-
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_LIBC_BUILTIN 1)
-set(WAMR_BUILD_APP_FRAMEWORK 0)
-set(WAMR_BUILD_BULK_MEMORY 1)
 set(WAMR_BUILD_REF_TYPES 1)
 
 include(../../unit_common.cmake)

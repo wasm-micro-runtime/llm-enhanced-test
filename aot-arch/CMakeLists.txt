@@ -1,10 +1,6 @@
 # Copyright (C) 2019 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.14)
-
-project(llm-enhanced-tests-aot-arch)
-
 wamr_unit_test_suite_run_modes(aot-arch MODES aot)
 if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
@@ -13,11 +9,8 @@ endif()
 # Add the current directory to the module path
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
-set(WAMR_BUILD_PLATFORM "linux")
-set(WAMR_BUILD_TARGET "X86_64")
 set(WAMR_BUILD_LIBC_WASI 0)
 set(WAMR_BUILD_LIBC_BUILTIN 1)
-set(WAMR_BUILD_APP_FRAMEWORK 0)
 
 # Include the build config
 include(${CMAKE_CURRENT_LIST_DIR}/../../unit_common.cmake)
@@ -34,7 +27,6 @@ set (unit_test_sources
      ${PLATFORM_SHARED_SOURCE}
      ${UTILS_SHARED_SOURCE}
      ${MEM_ALLOC_SHARED_SOURCE}
-     ${NATIVE_INTERFACE_SOURCE}
      ${LIBC_BUILTIN_SOURCE}
      ${LIBC_WASI_SOURCE}
      ${IWASM_COMMON_SOURCE}

@@ -1,10 +1,6 @@
 # Copyright (C) 2019 Intel Corporation.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.14)
-
-project(thread_mgr_enhanced_tests)
-
 wamr_unit_test_suite_run_modes(thread-mgr MODES classic-interp)
 if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()

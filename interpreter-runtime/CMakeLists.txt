@@ -1,26 +1,16 @@
 # Copyright (C) 2019 Intel Corporation.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.14)
-
-project (interpreter-runtime)
-
 wamr_unit_test_suite_run_modes(interpreter-runtime MODES classic-interp)
 if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-add_definitions (-DRUN_ON_LINUX)
-
-add_definitions (-Dattr_container_malloc=malloc)
-add_definitions (-Dattr_container_free=free)
 # add_definitions (-DWASM_ENABLE_WAMR_COMPILER=1)
 
 set (WAMR_BUILD_LIBC_WASI 1)
-set (WAMR_BUILD_APP_FRAMEWORK 1)
 set (WAMR_BUILD_THREAD_MGR 1)
 set (WAMR_BUILD_MULTI_MODULE 1)
-set (WAMR_BUILD_BULK_MEMORY 1)
 set (WAMR_BUILD_DUMP_CALL_STACK 1)
 
 include (../../unit_common.cmake)
@@ -46,7 +36,6 @@ set (unit_test_sources
      ${PLATFORM_SHARED_SOURCE}
      ${UTILS_SHARED_SOURCE}
      ${MEM_ALLOC_SHARED_SOURCE}
-     ${NATIVE_INTERFACE_SOURCE}
      ${LIBC_BUILTIN_SOURCE}
      ${LIBC_WASI_SOURCE}
      ${IWASM_COMMON_SOURCE}

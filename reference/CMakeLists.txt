@@ -1,10 +1,6 @@
 # Copyright (C) 2019 Intel Corporation.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.14)
-
-project(test-enhanced-reference-opcodes)
-
 wamr_unit_test_suite_run_modes(reference MODES classic-interp llvm-jit)
 if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
@@ -12,11 +8,8 @@ endif()
 
 # Enable required WAMR build flags for reference type opcodes (any.convert_extern, extern.convert_any, table operations)
 set(WAMR_BUILD_LIBC_WASI 1)
-set(WAMR_BUILD_APP_FRAMEWORK 0)
-set(WAMR_BUILD_MEMORY_PROFILING 0)
 
-# Enable bulk memory operations and reference types for reference opcodes
-set(WAMR_BUILD_BULK_MEMORY 1)
+# Enable reference types for reference opcodes
 set(WAMR_BUILD_REF_TYPES 1)
 
 # Enable function references for call_ref opcode support
@@ -24,9 +17,6 @@ set(WAMR_BUILD_FUNCTION_REFERENCES 1)
 
 # Enable GC features for any.convert_extern opcode support
 # set(WAMR_BUILD_GC 1)
-
-# Platform-specific definitions
-add_definitions(-DRUN_ON_LINUX)
 
 # Include shared unit test configuration
 include(../../unit_common.cmake)
