@@ -1,84 +1,21 @@
 # Copyright (C) 2024 Intel Corporation. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-wamr_unit_test_suite_run_modes(posix MODES classic-interp fast-interp aot)
-if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
-  return()
-endif()
-
-set(WAMR_BUILD_LIBC_BUILTIN 1)
-set(WAMR_BUILD_LIBC_WASI 1)
-set(WAMR_BUILD_SHARED_MEMORY 1)
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../unit_common.cmake)
-
-include(${IWASM_DIR}/compilation/iwasm_compl.cmake)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../common)
-
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_data)
-
-# =============================================================================
-# Target 1: llm-enhanced-test-posix-1
-# Socket options, multicast/TTL, and POSIX coverage improvement tests.
-# Requires LLVM linking for AOT compilation support.
-# =============================================================================
-set(POSIX_1_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_socket_options_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_multicast_ttl_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_coverage_improve_step_1.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_coverage_improve_step_2.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_coverage_improve_step_3.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_coverage_improve_step_4.cc
-)
-
-add_executable(llm-enhanced-test-posix-1
-    ${POSIX_1_SOURCES}
-    ${WAMR_RUNTIME_LIB_SOURCE}
-    ${UNCOMMON_SHARED_SOURCE}
-)
-
-target_link_libraries(llm-enhanced-test-posix-1 ${LLVM_AVAILABLE_LIBS} gtest_main -lm -ldl -lpthread)
-
-gtest_discover_tests(llm-enhanced-test-posix-1
-    PROPERTIES TIMEOUT 30
-)
-
-# =============================================================================
-# Target 2: llm-enhanced-test-posix-2
-# POSIX platform function tests (clock, sleep, time, malloc, file, socket,
-# blocking ops, thread). Tests platform API directly without LLVM.
-# =============================================================================
-set(POSIX_PLATFORM_DIR ${WAMR_ROOT_DIR}/core/shared/platform/common/posix)
-
-set(POSIX_2_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_clock_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_time_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_malloc_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_file_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/posix_socket_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/enhanced_posix_thread_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/enhanced_posix_file_test.cc
-)
-
-set(POSIX_2_PLATFORM_SOURCES
-    ${POSIX_PLATFORM_DIR}/posix_clock.c
-    ${POSIX_PLATFORM_DIR}/posix_sleep.c
-    ${POSIX_PLATFORM_DIR}/posix_time.c
-    ${POSIX_PLATFORM_DIR}/posix_malloc.c
-    ${POSIX_PLATFORM_DIR}/posix_file.c
-    ${POSIX_PLATFORM_DIR}/posix_socket.c
-    ${POSIX_PLATFORM_DIR}/posix_blocking_op.c
-    ${POSIX_PLATFORM_DIR}/posix_thread.c
-)
-
-add_executable(llm-enhanced-test-posix-2
-    ${POSIX_2_SOURCES}
-    ${POSIX_2_PLATFORM_SOURCES}
-    ${WAMR_RUNTIME_LIB_SOURCE}
-)
-
-target_link_libraries(llm-enhanced-test-posix-2 gtest_main -lm -ldl -lpthread)
-
-gtest_discover_tests(llm-enhanced-test-posix-2)
+# The POSIX platform cases are split by the build switches they actually need.
+# The dependency comes from
+#   core/shared/platform/common/posix/platform_api_posix.cmake
+# which only compiles posix_file.c / posix_clock.c when WAMR_BUILD_LIBC_WASI=1
+# (posix_file.c also needs the libc-util sources that switch pulls in), and
+# posix_socket.c when WAMR_BUILD_LIBC_WASI=1 or WAMR_BUILD_DEBUG_INTERP=1.
+# posix_time.c / posix_malloc.c / posix_thread.c are compiled unconditionally.
+#
+#   platform/   no WAMR_BUILD_* switch
+#               posix_time, posix_malloc, enhanced_posix_thread
+#   libc-wasi/  WAMR_BUILD_LIBC_WASI=1
+#               posix_clock, posix_file, enhanced_posix_file,
+#               posix_socket, posix_socket_options, posix_multicast_ttl,
+#               coverage_improve_step_1..4
+#
+# No case here needs WAMR_BUILD_LIBC_BUILTIN or WAMR_BUILD_SHARED_MEMORY.
+add_subdirectory(platform)
+add_subdirectory(libc-wasi)
