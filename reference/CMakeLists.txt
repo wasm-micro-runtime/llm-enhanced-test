@@ -7,7 +7,8 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
 endif()
 
 # Enable required WAMR build flags for reference type opcodes (any.convert_extern, extern.convert_any, table operations)
-set(WAMR_BUILD_LIBC_WASI 1)
+# No WAMR_BUILD_LIBC_WASI: these cases only use the runtime API (verified by
+# building and running the suite without the switch).
 
 # Enable reference types for reference opcodes
 set(WAMR_BUILD_REF_TYPES 1)

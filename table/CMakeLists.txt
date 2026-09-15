@@ -8,7 +8,8 @@ endif()
 
 # Enable required WAMR build flags for table opcode testing
 set(WAMR_BUILD_REF_TYPES 1)         # Required for table operations with references
-set(WAMR_BUILD_LIBC_WASI 1)
+# No WAMR_BUILD_LIBC_WASI: these cases only use the runtime API (verified by
+# building and running the suite without the switch).
 
 # Include shared unit test configuration
 include(../../unit_common.cmake)

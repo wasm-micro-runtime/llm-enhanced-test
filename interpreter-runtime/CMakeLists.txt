@@ -8,17 +8,13 @@ endif()
 
 # add_definitions (-DWASM_ENABLE_WAMR_COMPILER=1)
 
-set (WAMR_BUILD_LIBC_WASI 1)
+# No WAMR_BUILD_LIBC_WASI: these cases only use the runtime API (verified by
+# building and running the suite without the switch).
 set (WAMR_BUILD_THREAD_MGR 1)
 set (WAMR_BUILD_MULTI_MODULE 1)
 set (WAMR_BUILD_DUMP_CALL_STACK 1)
 
 include (../../unit_common.cmake)
-
-# Include LIBC WASI if enabled
-if (WAMR_BUILD_LIBC_WASI EQUAL 1)
-    include (${CMAKE_CURRENT_SOURCE_DIR}/../../../../core/iwasm/libraries/libc-wasi/libc_wasi.cmake)
-endif ()
 
 # Include thread manager if enabled
 if (WAMR_BUILD_THREAD_MGR EQUAL 1)
