@@ -44,14 +44,15 @@ target_link_libraries(interpreter-core
     ${LLVM_AVAILABLE_LIBS}
 )
 
+# MULTI_MODULE / TAIL_CALL / REF_TYPES are deliberately not defined: the cases
+# here (module loading, instance creation, interpreter coverage steps) do not
+# use them, and defining them kept the suite out of reports that do not declare
+# those features.  Verified by building and running the suite without each.
 target_compile_definitions(interpreter-core PRIVATE
     WASM_ENABLE_INTERP=1
     WASM_ENABLE_FAST_INTERP=0
     WASM_ENABLE_LIBC_BUILTIN=1
-    WASM_ENABLE_MULTI_MODULE=1
-    WASM_ENABLE_TAIL_CALL=1
     WASM_ENABLE_BULK_MEMORY=1
-    WASM_ENABLE_REF_TYPES=1
 )
 
 include(GoogleTest)

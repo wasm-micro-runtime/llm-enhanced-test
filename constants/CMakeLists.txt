@@ -7,7 +7,8 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
 endif()
 
 # WAMR build flags for enhanced constant opcode testing (i32.const, i64.const, f32.const, f64.const)
-set(WAMR_BUILD_LIBC_WASI 1)
+# No WAMR_BUILD_LIBC_WASI: these cases only use the runtime API (verified by
+# building and running the suite without the switch).
 
 # Include shared unit test configuration
 include(../../unit_common.cmake)

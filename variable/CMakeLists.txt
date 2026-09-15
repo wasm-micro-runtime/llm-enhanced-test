@@ -7,7 +7,8 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
 endif()
 
 # Enable required WAMR build flags for variable opcode testing (local.get, local.set, local.tee, global.get, global.set)
-set(WAMR_BUILD_LIBC_WASI 1)
+# No WAMR_BUILD_LIBC_WASI: these cases only use the runtime API (verified by
+# building and running the suite without the switch).
 
 # Include shared unit test configuration
 include(../../unit_common.cmake)
