@@ -6,8 +6,6 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-set(WAMR_BUILD_LIBC_WASI 1)
-
 # Include shared unit test configuration
 include(../../unit_common.cmake)
 

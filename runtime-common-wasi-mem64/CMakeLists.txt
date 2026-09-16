@@ -8,10 +8,11 @@ endif()
 
 # THREAD_MGR and LIB_PTHREAD are needed at link time: the cases call
 # wasm_runtime_spawn_exec_env() / wasm_runtime_destroy_spawned_exec_env(),
-# which the thread manager provides.  (The toggle probe wrongly reported them
-# as droppable, so do not remove them without a full build.)
+# which the thread manager provides.  The group probe confirms it: removing
+# them together fails the aot build (and per-switch probes that pass have been
+# wrong here before), so do not remove them without a full build.
+# WAMR_BUILD_MEMORY64 is the configuration this suite exists to cover.
 set(WAMR_BUILD_LIBC_WASI 1)
-set(WAMR_BUILD_SHARED_MEMORY 1)
 set(WAMR_BUILD_MEMORY64 1)
 set(WAMR_BUILD_LIB_PTHREAD 1)
 set(WAMR_BUILD_THREAD_MGR 1)

@@ -7,7 +7,6 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
 endif()
 
 set(WAMR_BUILD_LIBC_WASI 1)
-set(WAMR_BUILD_REF_TYPES 1)
 
 include(../../unit_common.cmake)
 

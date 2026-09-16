@@ -6,10 +6,10 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-set(WAMR_BUILD_LIBC_WASI 1)
-set(WAMR_BUILD_LIBC_BUILTIN 1)
-set(WAMR_BUILD_REF_TYPES 1)
-set(WAMR_BUILD_TAIL_CALL 1)
+# No feature switch is needed: the cases load fixtures whose opcodes are part
+# of the core specification, and the suite's own feature is the fast
+# interpreter mode it declares above.  (The probe builds and passes all 6
+# cases with libc-wasi/libc-builtin/ref-types/tail-call all removed.)
 
 include(../../unit_common.cmake)
 

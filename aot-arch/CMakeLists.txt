@@ -6,8 +6,8 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-# The cases drive the AOT relocation code directly and only need libc-builtin.
-set(WAMR_BUILD_LIBC_BUILTIN 1)
+# The cases drive the AOT relocation code directly; no feature switch is
+# needed (the probe builds and passes all 3 cases without libc-builtin).
 
 include(../../unit_common.cmake)
 

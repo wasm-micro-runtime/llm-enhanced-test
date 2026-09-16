@@ -9,9 +9,7 @@ endif()
 add_definitions(-DWASM_ENABLE_WAMR_COMPILER=1)
 
 # Set suite-specific WAMR configuration before including unit_common.cmake.
-set(WAMR_BUILD_DUMP_CALL_STACK 1)
 set(WAMR_BUILD_LIBC_WASI 0)
-set(WAMR_BUILD_THREAD_MGR 1)
 
 # The SIMD advanced compilation tests load `simd_test.wasm` which contains v128
 # value types. So we must enable SIMD support in the runtime loader/compiler.
