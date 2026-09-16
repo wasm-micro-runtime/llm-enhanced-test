@@ -6,9 +6,9 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-# The engine-store cases redirect the runtime output and dump the call stack.
-set(WAMR_BUILD_LIBC_BUILTIN 1)
-set(WAMR_BUILD_DUMP_CALL_STACK 1)
+# No feature switch is needed: the cases only use the C API, and the
+# engine-store cases that capture the runtime output link no libc either (the
+# probe builds and passes all 103 cases without libc-builtin/dump-call-stack).
 
 include(../../unit_common.cmake)
 

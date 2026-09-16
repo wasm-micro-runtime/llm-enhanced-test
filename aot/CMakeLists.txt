@@ -8,7 +8,6 @@ endif()
 
 add_definitions(-DWASM_ENABLE_WAMR_COMPILER=1)
 
-set(WAMR_BUILD_DUMP_CALL_STACK 1)
 set(WAMR_BUILD_LIBC_WASI 0)
 
 include(../../unit_common.cmake)

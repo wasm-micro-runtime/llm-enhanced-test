@@ -13,8 +13,9 @@ endif()
 # Enable reference types for reference opcodes
 set(WAMR_BUILD_REF_TYPES 1)
 
-# Enable function references for call_ref opcode support
-set(WAMR_BUILD_FUNCTION_REFERENCES 1)
+# No WAMR_BUILD_FUNCTION_REFERENCES: nothing in build-scripts/ reads that
+# variable, so it never reached the compiler; the call_ref cases run on
+# WAMR_BUILD_REF_TYPES above (verified by the probe).
 
 # Enable GC features for any.convert_extern opcode support
 # set(WAMR_BUILD_GC 1)

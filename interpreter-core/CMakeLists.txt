@@ -6,8 +6,9 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-# The cases load modules that import from the libc-builtin native functions.
-set(WAMR_BUILD_LIBC_BUILTIN 1)
+# No feature switch is needed: the cases that import malloc/free register
+# their own native under "env"
+# (interpreter_coverage_improve_step_3.cc), so libc-builtin stays off.
 
 include(../../unit_common.cmake)
 

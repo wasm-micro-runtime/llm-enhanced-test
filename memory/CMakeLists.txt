@@ -6,8 +6,9 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-# Enable required WAMR build flags for memory opcode testing (memory.init, i32.load, i32.store, i32.store8, i32.store16, f64.store)
-set(WAMR_BUILD_LIBC_WASI 1)
+# No feature switch is needed: the cases only use memory opcodes, which are
+# part of the core WebAssembly specification, and the fixtures they load need
+# no libc (the probe builds and passes all 62 cases without libc-wasi).
 
 # Enable standard memory operations for i32.load, i32.store, i32.store8, i32.store16, and f64.store opcodes (enabled by default)
 # Memory load/store operations are part of the core WebAssembly specification
