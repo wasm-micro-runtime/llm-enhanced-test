@@ -6,10 +6,10 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-set(WAMR_BUILD_LIBC_WASI 0)
+# The cases load modules that import from the libc-builtin native functions.
 set(WAMR_BUILD_LIBC_BUILTIN 1)
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../unit_common.cmake)
+include(../../unit_common.cmake)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -17,75 +17,45 @@ file(GLOB_RECURSE source_all ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
 set(unit_test_sources
     ${source_all}
-    ${PLATFORM_SHARED_SOURCE}
-    ${UTILS_SHARED_SOURCE}
-    ${MEM_ALLOC_SHARED_SOURCE}
-    ${LIBC_BUILTIN_SOURCE}
-    ${IWASM_COMMON_SOURCE}
-    ${IWASM_INTERP_SOURCE}
+    ${WAMR_RUNTIME_LIB_SOURCE}
     ${WAMR_ROOT_DIR}/core/shared/utils/uncommon/bh_read_file.c
 )
 
 add_executable(interpreter-core ${unit_test_sources})
-
-target_include_directories(interpreter-core PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../common
-    ${WAMR_ROOT_DIR}/core/iwasm/interpreter
-    ${WAMR_ROOT_DIR}/core/iwasm/include
-    ${WAMR_ROOT_DIR}/core/iwasm/common
-    ${WAMR_ROOT_DIR}/core/shared/utils
-    ${WAMR_ROOT_DIR}/core/shared/utils/uncommon
-    ${WAMR_ROOT_DIR}/core/shared/platform/include
-)
 
 target_link_libraries(interpreter-core
     gtest_main
     ${LLVM_AVAILABLE_LIBS}
 )
 
-# MULTI_MODULE / TAIL_CALL / REF_TYPES are deliberately not defined: the cases
-# here (module loading, instance creation, interpreter coverage steps) do not
-# use them, and defining them kept the suite out of reports that do not declare
-# those features.  Verified by building and running the suite without each.
-target_compile_definitions(interpreter-core PRIVATE
-    WASM_ENABLE_INTERP=1
-    WASM_ENABLE_FAST_INTERP=0
-    WASM_ENABLE_LIBC_BUILTIN=1
-    WASM_ENABLE_BULK_MEMORY=1
-)
+# The running mode (WASM_ENABLE_INTERP / WASM_ENABLE_FAST_INTERP), the libc
+# and bulk-memory macros are supplied by config_common.cmake for this
+# directory, so the suite does not restate them on the target.
 
-include(GoogleTest)
 gtest_discover_tests(interpreter-core)
 
 # Generated WASM fixture declarations
 
-# Generate tracked WASM fixtures from WAT/WAST sources.
 set(_generated_wasm_fixtures
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/arithmetic_bitwise.wat|${CMAKE_CURRENT_BINARY_DIR}/arithmetic_bitwise.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/complex_sections_module.wat|${CMAKE_CURRENT_BINARY_DIR}/complex_sections_module.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/datacount_test.wat|${CMAKE_CURRENT_BINARY_DIR}/datacount_test.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/empty_table_segments.wat|${CMAKE_CURRENT_BINARY_DIR}/empty_table_segments.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/floating_point_operations.wat|${CMAKE_CURRENT_BINARY_DIR}/floating_point_operations.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/function_invocation_test.wat|${CMAKE_CURRENT_BINARY_DIR}/function_invocation_test.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/import_export_module.wat|${CMAKE_CURRENT_BINARY_DIR}/import_export_module.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/invalid_magic_number.wat|${CMAKE_CURRENT_BINARY_DIR}/invalid_magic_number.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/multiple_table_types.wat|${CMAKE_CURRENT_BINARY_DIR}/multiple_table_types.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/simd_shuffle_test.wat|${CMAKE_CURRENT_BINARY_DIR}/simd_shuffle_test.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/table_validation_test.wat|${CMAKE_CURRENT_BINARY_DIR}/table_validation_test.wasm
-    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/valid_basic_module.wat|${CMAKE_CURRENT_BINARY_DIR}/valid_basic_module.wasm
+    arithmetic_bitwise
+    complex_sections_module
+    datacount_test
+    empty_table_segments
+    floating_point_operations
+    function_invocation_test
+    import_export_module
+    invalid_magic_number
+    multiple_table_types
+    simd_shuffle_test
+    table_validation_test
+    valid_basic_module
 )
 foreach(_fixture IN LISTS _generated_wasm_fixtures)
-    string(REPLACE "|" ";" _fixture_parts "${_fixture}")
-    list(GET _fixture_parts 0 _fixture_source)
-    list(GET _fixture_parts 1 _fixture_output)
     wamr_unit_test_compile_wat_to_wasm(
         TARGET interpreter-core
-        SOURCE ${_fixture_source}
-        OUTPUT ${_fixture_output}
+        SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/${_fixture}.wat
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_fixture}.wasm
     )
 endforeach()
 unset(_generated_wasm_fixtures)
-unset(_fixture_parts)
-unset(_fixture_source)
-unset(_fixture_output)
+unset(_fixture)

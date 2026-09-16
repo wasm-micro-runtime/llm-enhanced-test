@@ -6,37 +6,37 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-add_definitions (-DWASM_ENABLE_WAMR_COMPILER=1)
+add_definitions(-DWASM_ENABLE_WAMR_COMPILER=1)
 
 # Set suite-specific WAMR configuration before including unit_common.cmake.
-set (WAMR_BUILD_DUMP_CALL_STACK 1)
-set (WAMR_BUILD_LIBC_WASI 0)
-set (WAMR_BUILD_THREAD_MGR 1)
+set(WAMR_BUILD_DUMP_CALL_STACK 1)
+set(WAMR_BUILD_LIBC_WASI 0)
+set(WAMR_BUILD_THREAD_MGR 1)
 
 # The SIMD advanced compilation tests load `simd_test.wasm` which contains v128
 # value types. So we must enable SIMD support in the runtime loader/compiler.
-set (WAMR_BUILD_SIMD 1)
+set(WAMR_BUILD_SIMD 1)
 
-include (../../unit_common.cmake)
+include(../../unit_common.cmake)
 
-include (${IWASM_DIR}/compilation/iwasm_compl.cmake)
+include(${IWASM_DIR}/compilation/iwasm_compl.cmake)
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-file (GLOB source_all ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
+file(GLOB source_all ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
-set (UNIT_SOURCE ${source_all})
+set(UNIT_SOURCE ${source_all})
 
-set (unit_test_sources
+set(unit_test_sources
      ${UNIT_SOURCE}
      ${WAMR_RUNTIME_LIB_SOURCE}
      ${UNCOMMON_SHARED_SOURCE}
     )
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable (compilation-jit ${unit_test_sources})
+add_executable(compilation-jit ${unit_test_sources})
 
-target_link_libraries (compilation-jit ${LLVM_AVAILABLE_LIBS} gtest_main )
+target_link_libraries(compilation-jit ${LLVM_AVAILABLE_LIBS} gtest_main )
 
 wamr_unit_test_copy_wasm_files(compilation-jit
   FILES
@@ -45,7 +45,6 @@ wamr_unit_test_copy_wasm_files(compilation-jit
   COMMENT "Copy WASM test files to the directory: build/compilation-jit."
 )
 
-include(GoogleTest)
 gtest_discover_tests(compilation-jit)
 
 # Generated WASM fixture declarations

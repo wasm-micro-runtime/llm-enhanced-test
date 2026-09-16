@@ -6,6 +6,10 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
+# THREAD_MGR and LIB_PTHREAD are needed at link time: the cases call
+# wasm_runtime_spawn_exec_env() / wasm_runtime_destroy_spawned_exec_env(),
+# which the thread manager provides.  (The toggle probe wrongly reported them
+# as droppable, so do not remove them without a full build.)
 set(WAMR_BUILD_LIBC_WASI 1)
 set(WAMR_BUILD_SHARED_MEMORY 1)
 set(WAMR_BUILD_MEMORY64 1)
@@ -31,5 +35,4 @@ add_executable(runtime-common-wasi-mem64 ${unit_test_sources})
 
 target_link_libraries(runtime-common-wasi-mem64 gtest_main)
 
-include(GoogleTest)
 gtest_discover_tests(runtime-common-wasi-mem64)

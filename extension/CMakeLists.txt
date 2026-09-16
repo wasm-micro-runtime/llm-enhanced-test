@@ -8,7 +8,8 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
 endif()
 
 # Enable required WAMR build features for SIMD opcode testing (i8x16.splat, i16x8.splat, i32x4.splat, f64x2.extmul_high_i32x4_s, f64x2.extmul_high_i32x4_u, i16x8.extmul_high_i8x16_u)
-set(WAMR_BUILD_LIBC_WASI 1)
+# No WAMR_BUILD_LIBC_WASI: the cases only use the runtime API (verified by
+# building and running the suite without the switch).
 set(WAMR_BUILD_SIMD 1)
 
 # Include shared unit test configuration
@@ -49,7 +50,6 @@ target_link_libraries(enhanced_f64x2_extmul_high_i32x4_u_test ${LLVM_AVAILABLE_L
 target_link_libraries(enhanced_i16x8_extmul_high_i8x16_u_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 # Enable test discovery
-include(GoogleTest)
 gtest_discover_tests(enhanced_i8x16_splat_test)
 gtest_discover_tests(enhanced_i16x8_splat_test)
 gtest_discover_tests(enhanced_f64x2_extmul_high_i32x4_s_test)

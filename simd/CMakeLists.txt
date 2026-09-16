@@ -6,8 +6,8 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-set(WAMR_BUILD_LIBC_WASI 1)
-
+# No WAMR_BUILD_LIBC_WASI: the cases only use the runtime API (verified by
+# building and running the suite without the switch).
 set(WAMR_BUILD_SIMD 1)
 
 # Include shared unit test configuration
@@ -113,14 +113,13 @@ add_executable(enhanced_simd_test ${unit_test_sources})
 # Link required libraries
 target_link_libraries(enhanced_simd_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 # Enable test discovery
-include(GoogleTest)
 gtest_discover_tests(enhanced_simd_test)
 
 # Copy WASM test files to build directory for test execution
 wamr_unit_test_copy_wasm_files(enhanced_simd_test
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
-    COMMENT "Copying WASM test files to build directory"
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i16x8_extend_low_i8x16_s_test.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
 )
 
 # Generated WASM fixture declarations

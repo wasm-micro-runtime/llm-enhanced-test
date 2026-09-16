@@ -52,25 +52,27 @@ target_link_libraries(enhanced_f64_const_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 # Post-build: Copy WASM test files to build directory for all tests
 wamr_unit_test_copy_wasm_files(enhanced_i32_const_test
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR $<TARGET_FILE_DIR:enhanced_i32_const_test>/wasm-apps
-    COMMENT "Copying WASM test files to i32_const test build directory"
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_const_invalid.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_const_invalid.wasm
+  DEST_DIR $<TARGET_FILE_DIR:enhanced_i32_const_test>/wasm-apps
 )
 
 wamr_unit_test_copy_wasm_files(enhanced_f32_const_test
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR $<TARGET_FILE_DIR:enhanced_f32_const_test>/wasm-apps
-    COMMENT "Copying WASM test files to f32_const test build directory"
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_const_invalid.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_const_invalid.wasm
+  DEST_DIR $<TARGET_FILE_DIR:enhanced_f32_const_test>/wasm-apps
 )
 
 wamr_unit_test_copy_wasm_files(enhanced_f64_const_test
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR $<TARGET_FILE_DIR:enhanced_f64_const_test>/wasm-apps
-    COMMENT "Copying WASM test files to f64_const test build directory"
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_const_invalid.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/i64_const_invalid.wasm
+  DEST_DIR $<TARGET_FILE_DIR:enhanced_f64_const_test>/wasm-apps
 )
 
 # Register tests with CTest using gtest_discover_tests to support individual test case filtering
-include(GoogleTest)
 
 gtest_discover_tests(enhanced_i32_const_test
                      PROPERTIES RUN_SERIAL TRUE

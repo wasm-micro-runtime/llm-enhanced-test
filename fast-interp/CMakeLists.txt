@@ -29,28 +29,46 @@ target_link_libraries(fast_interp_coverage_test ${LLVM_AVAILABLE_LIBS} gtest_mai
 
 gtest_discover_tests(fast_interp_coverage_test)
 
-# Copy wasm-apps from all opcode test directories
-set(WASM_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/../numeric/wasm-apps
-    ${CMAKE_CURRENT_SOURCE_DIR}/../memory/wasm-apps
-    ${CMAKE_CURRENT_SOURCE_DIR}/../control-flow/wasm-apps
-    ${CMAKE_CURRENT_SOURCE_DIR}/../variable/wasm-apps
-    ${CMAKE_CURRENT_SOURCE_DIR}/../table/wasm-apps
-    ${CMAKE_CURRENT_SOURCE_DIR}/../constants/wasm-apps
-    ${CMAKE_CURRENT_SOURCE_DIR}/../reference/wasm-apps
+# The cases read their fixtures from wasm-apps/<category>/.  Everything this
+# suite builds from a .wat is generated below; the committed .wasm files that
+# have no compilable source are copied here.
+wamr_unit_test_copy_wasm_files(fast_interp_coverage_test
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/../numeric/wasm-apps/i64_gt_u_stack_underflow.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/numeric
 )
 
-foreach(WASM_DIR ${WASM_DIRS})
-    if(EXISTS ${WASM_DIR})
-        get_filename_component(PARENT_DIR ${WASM_DIR} DIRECTORY)
-        get_filename_component(CATEGORY ${PARENT_DIR} NAME)
-        wamr_unit_test_copy_wasm_files(fast_interp_coverage_test
-            SOURCE_DIR ${WASM_DIR}
-            DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/${CATEGORY}
-            COMMENT "Copying ${CATEGORY} WASM files"
-        )
-    endif()
-endforeach()
+wamr_unit_test_copy_wasm_files(fast_interp_coverage_test
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/../control-flow/wasm-apps/end_invalid_test.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/control-flow
+)
+
+wamr_unit_test_copy_wasm_files(fast_interp_coverage_test
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/../variable/wasm-apps/global_get_invalid_index_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../variable/wasm-apps/global_set_immutable_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../variable/wasm-apps/global_set_invalid_index_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../variable/wasm-apps/local_set_invalid_index_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../variable/wasm-apps/local_tee_invalid_index_test.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/variable
+)
+
+wamr_unit_test_copy_wasm_files(fast_interp_coverage_test
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/../constants/wasm-apps/f64_const_invalid.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../constants/wasm-apps/i64_const_invalid.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/constants
+)
+
+wamr_unit_test_copy_wasm_files(fast_interp_coverage_test
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/../reference/wasm-apps/table_copy_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../reference/wasm-apps/table_fill_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../reference/wasm-apps/table_grow_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/../reference/wasm-apps/table_set_test.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps/reference
+)
 
 # Generated WASM fixture declarations
 

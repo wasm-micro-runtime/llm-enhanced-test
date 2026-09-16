@@ -41,15 +41,7 @@ add_executable(enhanced_table_opcodes_test ${unit_test_sources})
 target_link_libraries(enhanced_table_opcodes_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 # Enable test discovery
-include(GoogleTest)
 gtest_discover_tests(enhanced_table_opcodes_test)
-
-# Copy WASM test files to build directory for test execution
-wamr_unit_test_copy_wasm_files(enhanced_table_opcodes_test
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
-    COMMENT "Copying WASM test files to build directory"
-)
 
 # Generated WASM fixture declarations
 

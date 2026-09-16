@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Intel Corporation. All rights reserved.
+# Copyright (C) 2019 Intel Corporation.  All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 wamr_unit_test_suite_run_modes(aot-arch MODES aot)
@@ -6,153 +6,35 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
   return()
 endif()
 
-# Add the current directory to the module path
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
-
-set(WAMR_BUILD_LIBC_WASI 0)
+# The cases drive the AOT relocation code directly and only need libc-builtin.
 set(WAMR_BUILD_LIBC_BUILTIN 1)
 
-# Include the build config
-include(${CMAKE_CURRENT_LIST_DIR}/../../unit_common.cmake)
+include(../../unit_common.cmake)
 
-# Set test target name
-set(TEST_TARGET aot_arch_tests)
-
-# Create test executable for Step 1
-set(STEP1_TARGET aot_arch_step1_test)
-
-# Define source files needed for AOT relocation testing
-set (unit_test_sources
-     aot_arch_add_40_step_1.cc
-     ${PLATFORM_SHARED_SOURCE}
-     ${UTILS_SHARED_SOURCE}
-     ${MEM_ALLOC_SHARED_SOURCE}
-     ${LIBC_BUILTIN_SOURCE}
-     ${LIBC_WASI_SOURCE}
-     ${IWASM_COMMON_SOURCE}
-     ${IWASM_INTERP_SOURCE}
-     ${IWASM_AOT_SOURCE}
-)
-
-add_executable(${STEP1_TARGET} ${unit_test_sources})
-
-# Platform-aware feature detection and compilation definitions
-message("=== AOT Architecture Test Platform Configuration ===")
-
-# Detect current WAMR configuration from parent build
+# The test source picks its relocation cases with BUILD_TARGET_*; the macros
+# naming the host are not something config_common.cmake derives, so they are
+# defined here.  Everything else it needs to know (WASM_ENABLE_SIMD,
+# WASM_ENABLE_AOT, WASM_ENABLE_JIT, WASM_ENABLE_MEMORY64, ...) is already
+# added to this directory by config_common.cmake and must not be restated.
 if(WAMR_BUILD_TARGET MATCHES "X86_.*")
-    target_compile_definitions(${STEP1_TARGET} PRIVATE BUILD_TARGET_X86_64=1)
-    message("-- AOT Arch tests: X86_64 target detected")
+  add_definitions(-DBUILD_TARGET_X86_64=1)
 elseif(WAMR_BUILD_TARGET MATCHES "AARCH64.*")
-    target_compile_definitions(${STEP1_TARGET} PRIVATE BUILD_TARGET_AARCH64=1)
-    message("-- AOT Arch tests: ARM64 target detected")
-elseif(WAMR_BUILD_TARGET MATCHES "RISCV.*")
-    target_compile_definitions(${STEP1_TARGET} PRIVATE BUILD_TARGET_RISCV=1)
-    message("-- AOT Arch tests: RISC-V target detected")
-else()
-    # Default to X86_64 for unit tests
-    target_compile_definitions(${STEP1_TARGET} PRIVATE BUILD_TARGET_X86_64=1)
-    message("-- AOT Arch tests: Defaulting to X86_64 target")
+  add_definitions(-DBUILD_TARGET_AARCH64=1)
+elseif(WAMR_BUILD_TARGET MATCHES "RISCV64.*")
+  add_definitions(-DBUILD_TARGET_RISCV64_LP64D=1)
+elseif(WAMR_BUILD_TARGET MATCHES "RISCV32.*")
+  add_definitions(-DBUILD_TARGET_RISCV32_ILP32=1)
 endif()
 
-# Feature-specific definitions (CRITICAL for platform compatibility)
-if(WAMR_BUILD_SIMD EQUAL 1)
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_SIMD=1)
-    message("-- AOT Arch tests: SIMD support enabled")
-else()
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_SIMD=0)
-endif()
+file(GLOB_RECURSE source_all ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
-if(WAMR_BUILD_AOT EQUAL 1)
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_AOT=1)
-    message("-- AOT Arch tests: AOT support enabled")
-else()
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_AOT=0)
-endif()
-
-if(WAMR_BUILD_JIT EQUAL 1)
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_JIT=1)
-    message("-- AOT Arch tests: JIT support enabled")
-else()
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_JIT=0)
-endif()
-
-if(WAMR_BUILD_FAST_JIT EQUAL 1)
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_FAST_JIT=1)
-    message("-- AOT Arch tests: Fast JIT support enabled")
-else()
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_FAST_JIT=0)
-endif()
-
-# Memory configuration
-if(WAMR_BUILD_MEMORY64 EQUAL 1)
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_MEMORY64=1)
-    message("-- AOT Arch tests: Memory64 support enabled")
-else()
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_MEMORY64=0)
-endif()
-
-if(WAMR_BUILD_SHARED_MEMORY EQUAL 1)
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_SHARED_MEMORY=1)
-    message("-- AOT Arch tests: Shared memory support enabled")
-else()
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_SHARED_MEMORY=0)
-endif()
-
-# Threading support
-if(WAMR_BUILD_LIB_PTHREAD EQUAL 1)
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_LIB_PTHREAD=1)
-    message("-- AOT Arch tests: Pthread support enabled")
-else()
-    target_compile_definitions(${STEP1_TARGET} PRIVATE WASM_ENABLE_LIB_PTHREAD=0)
-endif()
-
-message("================================================")
-
-# Include directories for WAMR headers
-target_include_directories(${STEP1_TARGET} PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/iwasm/include
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/iwasm/common
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/iwasm/aot
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/iwasm/aot/arch
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/shared/platform/linux
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/shared/platform/common/posix
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/shared/mem-alloc
-    ${CMAKE_CURRENT_LIST_DIR}/../../../../core/shared/utils
-    ${CMAKE_CURRENT_LIST_DIR}/../..
+set(unit_test_sources
+  ${source_all}
+  ${WAMR_RUNTIME_LIB_SOURCE}
 )
 
-# Link against WAMR libraries and LLVM
-target_link_libraries(${STEP1_TARGET}
-    ${LLVM_AVAILABLE_LIBS}
-    gtest_main
-)
-
-# Add platform-specific link options
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_link_libraries(${STEP1_TARGET} pthread dl m)
-endif()
-
-# Enable code coverage if requested
-if(COLLECT_CODE_COVERAGE EQUAL 1)
-    target_compile_options(${STEP1_TARGET} PRIVATE --coverage)
-    target_link_options(${STEP1_TARGET} PRIVATE --coverage)
-endif()
-
-# Add test to CTest
-gtest_discover_tests(${STEP1_TARGET})
-
-# Copy any required WASM files to build directory (for future steps)
-add_custom_command(TARGET ${STEP1_TARGET} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E echo "AOT Architecture Step 1 tests built successfully"
-    COMMENT "AOT Architecture Step 1 test build complete"
-)
-
-# Add the test to the main test suite
-add_test(NAME aot_arch_step1_tests COMMAND ${STEP1_TARGET})
-
-# Set test properties for better output
-set_tests_properties(aot_arch_step1_tests PROPERTIES
-    TIMEOUT 300
-    LABELS "aot;arch;step1;coverage"
+add_executable(aot_arch_tests ${unit_test_sources})
+target_link_libraries(aot_arch_tests ${LLVM_AVAILABLE_LIBS} gtest_main)
+gtest_discover_tests(aot_arch_tests
+    PROPERTIES TIMEOUT 300
 )
