@@ -39,14 +39,13 @@ add_executable(enhanced_control_flow_test ${unit_test_sources})
 target_link_libraries(enhanced_control_flow_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 # Enable test discovery
-include(GoogleTest)
 gtest_discover_tests(enhanced_control_flow_test)
 
 # Copy WASM test files to build directory for test execution
 wamr_unit_test_copy_wasm_files(enhanced_control_flow_test
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
-    COMMENT "Copying WASM test files to build directory"
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/end_invalid_test.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
 )
 
 # Generated WASM fixture declarations

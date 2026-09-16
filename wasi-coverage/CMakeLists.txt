@@ -7,7 +7,6 @@ if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
 endif()
 
 set(WAMR_BUILD_LIBC_WASI 1)
-set(WAMR_BUILD_LIBC_BUILTIN 1)
 set(WAMR_BUILD_REF_TYPES 1)
 
 include(../../unit_common.cmake)
@@ -27,12 +26,6 @@ add_executable(wasi_coverage_test ${unit_test_sources})
 target_link_libraries(wasi_coverage_test ${LLVM_AVAILABLE_LIBS} gtest_main)
 
 gtest_discover_tests(wasi_coverage_test)
-
-wamr_unit_test_copy_wasm_files(wasi_coverage_test
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
-    COMMENT "Copying WASI test WASM files"
-)
 
 # Generated WASM fixture declarations
 

@@ -56,5 +56,4 @@ wamr_unit_test_compile_wasm_to_aot(
 )
 
 # Skip gtest_discover_tests for now to avoid build issues
-# include(GoogleTest)
 gtest_discover_tests(runtime-common-reftypes-multimod)

@@ -41,30 +41,41 @@ grep -i "{module}" build.log compile.log test.log
 ### Phase 2: Build Configuration Issues
 
 **CMakeLists.txt Template for {module}:**
+
+Follow `tests/unit/README.md`; the suite skeleton is:
 ```cmake
-cmake_minimum_required(VERSION 3.0)
-project(test_{module})
+# Copyright (C) 2026 Intel Corporation.  All rights reserved.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+wamr_unit_test_suite_run_modes(test-{module} MODES classic-interp)
+if(NOT WAMR_UNIT_TEST_SUITE_ENABLED)
+  return()
+endif()
+
+# Only the switches this suite actually needs; every one is written as
+# set(WAMR_BUILD_xx 1) and nothing else.
+set(WAMR_BUILD_LIBC_BUILTIN 1)
 
 include(../unit_common.cmake)
+
 include_directories(${{CMAKE_CURRENT_SOURCE_DIR}})
 
-# Use GLOB not GLOB_RECURSE for {module}
-file(GLOB source_all ${{CMAKE_CURRENT_SOURCE_DIR}}/*.cc)
+file(GLOB_RECURSE source_all ${{CMAKE_CURRENT_SOURCE_DIR}}/*.cc)
 
 set(unit_test_sources
-    ${{UNIT_SOURCE}}
+    ${{source_all}}
     ${{WAMR_RUNTIME_LIB_SOURCE}}
-    ${{UNCOMMON_SHARED_SOURCE}}
-    # DO NOT add ${{SRC_LIST}} or aux_source_directory
 )
 
-set(UNIT_SOURCE ${{source_all}})
-set(UNIT_SOURCE ${{UNIT_SOURCE}} ${{unit_test_sources}})
-
-add_executable(test_{module} ${{UNIT_SOURCE}})
+add_executable(test_{module} ${{unit_test_sources}})
 target_link_libraries(test_{module} ${{LLVM_AVAILABLE_LIBS}} gtest_main)
 gtest_discover_tests(test_{module})
 ```
+
+Do not add `cmake_minimum_required()`, `project()`, `include(GoogleTest)`,
+`enable_testing()`, `FetchContent`, a runtime-mode option, a hand-written list
+of runtime sources, or the `UNIT_SOURCE` dance: the top-level
+`tests/unit/CMakeLists.txt` and `unit_common.cmake` already provide all of it.
 
 ### Phase 3: Compilation Error Resolution
 

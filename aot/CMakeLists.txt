@@ -29,8 +29,6 @@ set(unit_test_sources
     ${UNCOMMON_SHARED_SOURCE}
 )
 
-include(GoogleTest)
-
 add_executable(aot ${unit_test_sources})
 
 target_link_libraries(aot ${LLVM_AVAILABLE_LIBS} gtest_main gmock)

@@ -37,14 +37,18 @@ add_executable(llm-enhanced-test-running-modes ${unit_test_sources})
 
 target_link_libraries(llm-enhanced-test-running-modes ${LLVM_AVAILABLE_LIBS} gtest_main)
 
-# include(GoogleTest)
 gtest_discover_tests(llm-enhanced-test-running-modes)
 
 # Copy WASM test files to build directory for test execution
 wamr_unit_test_copy_wasm_files(llm-enhanced-test-running-modes
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps
-    DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
-    COMMENT "Copying WASM test files to build directory"
+  FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f32_gt_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/f64_ge_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/global_get_invalid_index_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/global_set_immutable_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/global_set_invalid_index_test.wasm
+    ${CMAKE_CURRENT_SOURCE_DIR}/wasm-apps/local_tee_invalid_index_test.wasm
+  DEST_DIR ${CMAKE_CURRENT_BINARY_DIR}/wasm-apps
 )
 
 wamr_unit_test_compile_c_to_wasm(
